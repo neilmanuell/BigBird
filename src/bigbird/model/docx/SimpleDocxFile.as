@@ -3,20 +3,22 @@ package bigbird.model.docx
 import deng.fzip.FZip;
 import deng.fzip.FZipFile;
 
+import flash.net.URLRequest;
+
 public class SimpleDocxFile implements IDocxFile
 {
 
     public static const DOCUMENT_XML_PATH:String = "word/document.xml";
 
     private var _fzip:FZip;
-    private var _url:String;
-    public function SimpleDocxFile( fzip:FZip, url:String ):void
+    private var _url:URLRequest;
+    public function SimpleDocxFile( fzip:FZip, url:URLRequest ):void
     {
         _fzip = fzip;
         _url = url;
     }
 
-    public function get url():String
+    public function get urlRequest():URLRequest
     {
         return _url;
     }

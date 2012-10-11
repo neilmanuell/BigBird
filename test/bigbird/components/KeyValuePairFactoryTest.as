@@ -93,6 +93,13 @@ public class KeyValuePairFactoryTest
     }
 
     [Test]
+    public function testKeyCellHas_KEY_VALUE_PAIR_STATE():void
+    {
+        const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
+        assertThat( entity.get( KeyValuePairState ), instanceOf( KeyValuePairState ) );
+    }
+
+    [Test]
     public function UID_increases_with_each_call_for_same_doc_name():void
     {
         var entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );

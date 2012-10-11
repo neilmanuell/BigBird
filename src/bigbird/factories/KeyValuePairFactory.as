@@ -23,6 +23,7 @@ public class KeyValuePairFactory
         const entity:Entity = new Entity();
         if ( _indices[documentName] == null ) _indices[documentName] = 0;
         entity.add( new KeyValuePairUID( _indices[documentName]++, documentName ) );
+        entity.add( new KeyValuePairState() );
         entity.add( new KeyCell( keyCellData, keyCellData.namespace( "w" ) ) );
         entity.add( new ValueCell( valueCellData, valueCellData.namespace( "w" ) ) );
         game.addEntity( entity );

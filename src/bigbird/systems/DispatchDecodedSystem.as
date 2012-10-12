@@ -6,11 +6,11 @@ import bigbird.nodes.KeyValuePairNode;
 import net.richardlord.ash.tools.ListIteratingSystem;
 import net.richardlord.signals.Signal2;
 
-public class DispatchKeyValuePairSystem extends ListIteratingSystem
+public class DispatchDecodedSystem extends ListIteratingSystem
 {
     private var _signal:KeyValuePairSignal;
 
-    public function DispatchKeyValuePairSystem( signal:KeyValuePairSignal )
+    public function DispatchDecodedSystem( signal:KeyValuePairSignal )
     {
         super( KeyValuePairNode, updateNode );
         _signal = signal;

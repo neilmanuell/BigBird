@@ -2,7 +2,6 @@ package bigbird.systems
 {
 import bigbird.asserts.assertKeyValuePairs;
 import bigbird.components.RawWordDocument;
-import bigbird.factories.KeyValuePairFactory;
 
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
@@ -22,9 +21,7 @@ public class DecodeFromRawDocumentTest
     {
         _mockGame = new MockGame();
 
-        _classUnderTest = new DecodeFromRawDocument(
-                new KeyValuePairFactory( _mockGame )
-        );
+        _classUnderTest = new DecodeFromRawDocument( _mockGame );
     }
 
     public function prepareDocument( documentData:XML = null ):void

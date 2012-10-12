@@ -8,12 +8,9 @@ import net.richardlord.ash.core.Game;
 
 public class SingletonSystemFactory
 {
-
-
     private const _systemMap:Dictionary = new Dictionary( false );
 
     private var _game:Game;
-
 
     public function SingletonSystemFactory( game:Game )
     {
@@ -57,9 +54,8 @@ public class SingletonSystemFactory
         const onUpdateComplete:Function = function ():void
         {
             _game.addSystem( config.instance, config.priority );
-            _game.updateComplete.remove( onUpdateComplete );
         }
-        _game.updateComplete.add( onUpdateComplete );
+        _game.updateComplete.addOnce( onUpdateComplete );
     }
 
     private function removeSystemOnUpDateComplete( config:SystemFactoryConfig ):void
@@ -67,9 +63,8 @@ public class SingletonSystemFactory
         const onUpdateComplete:Function = function ():void
         {
             _game.removeSystem( config.instance );
-            _game.updateComplete.remove( onUpdateComplete );
         }
-        _game.updateComplete.add( onUpdateComplete );
+        _game.updateComplete.addOnce( onUpdateComplete );
 
     }
 

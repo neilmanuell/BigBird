@@ -19,18 +19,18 @@ import supporting.values.DOCUMENT_NAME;
 
 use namespace DOCUMENT_NAME;
 
-public class SystemFactoryTest
+public class SingletonSystemFactoryTest
 {
 
     private var _game:MockGame;
-    private var _classUnderTest:SystemFactory;
+    private var _classUnderTest:SingletonSystemFactory;
 
 
     [Before]
     public function before():void
     {
         _game = new MockGame();
-        _classUnderTest = new SystemFactory( _game );
+        _classUnderTest = new SingletonSystemFactory( _game );
         const config:SystemFactoryConfig = new SystemFactoryConfig(
                 SystemName.DECODE,
                 DecodeSystem,

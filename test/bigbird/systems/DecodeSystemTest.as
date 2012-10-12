@@ -2,7 +2,6 @@ package bigbird.systems
 {
 import bigbird.components.Progress;
 import bigbird.components.RawWordDocument;
-import bigbird.factories.KeyValuePairFactory;
 import bigbird.nodes.DecodeNode;
 
 import org.hamcrest.assertThat;
@@ -18,7 +17,6 @@ public class DecodeSystemTest
 {
     private var _node:DecodeNode;
     private var _decoder:DecodeFromRawDocument;
-    private var _factory:KeyValuePairFactory;
     private var _game:MockGame;
     private var _classUnderTest:DecodeSystem;
 
@@ -29,8 +27,8 @@ public class DecodeSystemTest
         _node.document = new RawWordDocument( DOCUMENT_NAME, DOCUMENT_FULL_XML );
         _node.progress = new Progress( _node.document.length );
         _game = new MockGame();
-        _factory = new KeyValuePairFactory( _game );
-        _decoder = new DecodeFromRawDocument( _factory );
+
+        _decoder = new DecodeFromRawDocument( _game );
         _classUnderTest = new DecodeSystem( _decoder );
     }
 
@@ -38,7 +36,6 @@ public class DecodeSystemTest
     public function after():void
     {
         _node = null;
-        _factory = null;
         _decoder = null;
         _game = null;
         _classUnderTest = null;

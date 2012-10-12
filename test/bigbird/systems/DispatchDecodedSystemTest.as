@@ -17,17 +17,17 @@ import supporting.values.DOCUMENT_NAME;
 import supporting.values.KEY_CELL_XML;
 import supporting.values.VALUE_CELL_XML;
 
-public class DispatchKeyValuePairTest
+public class DispatchDecodedSystemTest
 {
     private var _recievedData:KeyValuePair;
     private var _recievedDocumentName:String;
     private var _numTimesDispatched:int;
-    private var _classUnderTest:DispatchKeyValuePairSystem;
+    private var _classUnderTest:DispatchDecodedSystem;
 
     [Before]
     public function before():void
     {
-        _classUnderTest = new DispatchKeyValuePairSystem( new KeyValuePairSignal() );
+        _classUnderTest = new DispatchDecodedSystem( new KeyValuePairSignal() );
     }
 
     [After]
@@ -118,6 +118,13 @@ public class DispatchKeyValuePairTest
         assertThat( _recievedData.content, equalTo( "QAA" ) );
     }
 
+    private function onDispatch( documentName:String, data:KeyValuePair ):void
+    {
+        _numTimesDispatched++;
+        _recievedDocumentName = documentName;
+        _recievedData = data;
+    }
+
     private function createNode( keyCellData:XML, valueCellData:XML, documentName:String ):KeyValuePairNode
     {
         const node:KeyValuePairNode = new KeyValuePairNode();
@@ -127,14 +134,6 @@ public class DispatchKeyValuePairTest
         node.uid = new KeyValuePairUID( 0, documentName );
         return node;
     }
-
-    private function onDispatch( documentName:String, data:KeyValuePair ):void
-    {
-        _numTimesDispatched++;
-        _recievedDocumentName = documentName;
-        _recievedData = data;
-    }
-
 
 }
 }

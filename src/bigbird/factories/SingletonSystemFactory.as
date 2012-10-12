@@ -1,15 +1,12 @@
 package bigbird.factories
 {
 import bigbird.components.SystemFactoryConfig;
-import bigbird.systems.DecodeFromRawDocument;
-import bigbird.systems.DecodeSystem;
 
 import flash.utils.Dictionary;
 
 import net.richardlord.ash.core.Game;
-import net.richardlord.ash.core.System;
 
-public class SystemFactory
+public class SingletonSystemFactory
 {
 
 
@@ -18,30 +15,42 @@ public class SystemFactory
     private var _game:Game;
 
 
-    public function SystemFactory( game:Game )
+    public function SingletonSystemFactory( game:Game )
     {
         _game = game;
     }
 
+    /**
+     * Configures the factory with a Singleton System
+     * @param config
+     */
     public function register( config:SystemFactoryConfig ):void
     {
         if ( _systemMap[config.systemName] != null ) return;
         _systemMap[config.systemName] = config;
     }
 
+    /**
+     * Adds the system to the game on the next updateComplete
+     * @param systemName as defined in the SystemFactoryConfig registered
+     */
     public function addSystem( systemName:String ):void
     {
         if ( _systemMap[systemName] == null ) return;
         addSystemOnUpdateComplete( _systemMap[systemName] )
     }
 
+    /**
+     * Removes the system from the game on the next updateComplete
+     * @param systemName as defined in the SystemFactoryConfig registered
+     */
     public function removeSystem( systemName:String ):void
     {
         if ( _systemMap[systemName] == null ) return;
         removeSystemOnUpDateComplete( _systemMap[systemName] );
     }
 
-    internal function addSystemOnUpdateComplete( config:SystemFactoryConfig ):void
+    private function addSystemOnUpdateComplete( config:SystemFactoryConfig ):void
     {
         if ( _game.getSystem( config.systemClass ) != null )return;
 
@@ -53,7 +62,7 @@ public class SystemFactory
         _game.updateComplete.add( onUpdateComplete );
     }
 
-    internal function removeSystemOnUpDateComplete( config:SystemFactoryConfig ):void
+    private function removeSystemOnUpDateComplete( config:SystemFactoryConfig ):void
     {
         const onUpdateComplete:Function = function ():void
         {
@@ -63,12 +72,6 @@ public class SystemFactory
         _game.updateComplete.add( onUpdateComplete );
 
     }
-
-    private function decodeSystemFactoryMethod():System
-    {
-        return new DecodeSystem( new DecodeFromRawDocument( _game ) );
-    }
-
 
 }
 }

@@ -1,6 +1,6 @@
-package bigbird.components
+package bigbird.factories
 {
-import bigbird.factories.KeyValuePairFactory;
+import bigbird.components.*;
 
 import flash.events.Event;
 

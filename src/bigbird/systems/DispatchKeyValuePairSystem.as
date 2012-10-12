@@ -18,8 +18,8 @@ public class DispatchKeyValuePairSystem extends ListIteratingSystem
 
     internal function updateNode( node:KeyValuePairNode, time:Number ):void
     {
-        if ( node.state.isDispatched )return;
-        node.state.isDispatched = true;
+        if ( node.state.hasDispatched )return;
+        node.state.hasDispatched = true;
         _signal.dispatchKeyValuePair( node.uid.groupID, node.key, node.value );
     }
 

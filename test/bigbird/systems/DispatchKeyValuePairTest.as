@@ -48,7 +48,7 @@ public class DispatchKeyValuePairTest
         const node:KeyValuePairNode = createNode( KEY_CELL_XML, VALUE_CELL_XML, DOCUMENT_NAME );
         _classUnderTest.updateNode( node, 0 );
 
-        assertThat( node.state.isDispatched, isTrue() );
+        assertThat( node.state.hasDispatched, isTrue() );
     }
 
     [Test]

@@ -9,7 +9,6 @@ import net.richardlord.ash.core.Game;
 
 public class KeyValuePairFactory
 {
-
     private var game:Game;
     private const _indices:Dictionary = new Dictionary();
 

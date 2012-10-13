@@ -11,6 +11,7 @@ public class MockGame extends Game
 
     public override function addEntity( entity:Entity ):void
     {
+        super.addEntity( entity );
         entitiesReceived.push( entity );
     }
 

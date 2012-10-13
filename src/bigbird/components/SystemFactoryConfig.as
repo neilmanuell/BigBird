@@ -8,6 +8,7 @@ public class SystemFactoryConfig
     public var systemName:String;
     public var instance:System;
     public var systemClass:Class;
+    public var isActive:Boolean;
 
     public function SystemFactoryConfig( systemName:String, systemClass:Class, priority:int, factoryMethod:Function = null )
     {

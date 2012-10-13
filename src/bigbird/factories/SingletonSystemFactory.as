@@ -47,24 +47,36 @@ public class SingletonSystemFactory
         removeSystemOnUpDateComplete( _systemMap[systemName] );
     }
 
+
+    public function removeAllSystems():void
+    {
+        for each( var config:SystemFactoryConfig in _systemMap )
+        {
+            removeSystemOnUpDateComplete( config );
+        }
+    }
+
     private function addSystemOnUpdateComplete( config:SystemFactoryConfig ):void
     {
-        if ( _game.getSystem( config.systemClass ) != null )return;
+        if ( config.isActive )return;
 
         const onUpdateComplete:Function = function ():void
         {
             _game.addSystem( config.instance, config.priority );
         }
         _game.updateComplete.addOnce( onUpdateComplete );
+        config.isActive = true;
     }
 
     private function removeSystemOnUpDateComplete( config:SystemFactoryConfig ):void
     {
+        if ( !config.isActive )return;
         const onUpdateComplete:Function = function ():void
         {
             _game.removeSystem( config.instance );
         }
         _game.updateComplete.addOnce( onUpdateComplete );
+        config.isActive = false;
 
     }
 

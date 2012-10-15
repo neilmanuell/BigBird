@@ -10,7 +10,7 @@ import org.hamcrest.object.isTrue;
 import org.hamcrest.object.nullValue;
 
 import supporting.MockGame;
-import supporting.utils.configureSingletonSystemFactory;
+import supporting.utils.configureTestSingletonSystemFactory;
 
 public class StateMachineTest
 {
@@ -24,7 +24,7 @@ public class StateMachineTest
     {
         _game = new MockGame();
         _state = new BigBirdState( _game.updateComplete );
-        _factory = configureSingletonSystemFactory( _game );
+        _factory = configureTestSingletonSystemFactory( _game );
         _classUnderTest = new StateMachine( _state, _factory );
     }
 

@@ -1,14 +1,14 @@
-package bigbird.core
+package bigbird.core.vos
 {
 import bigbird.components.KeyCell;
 import bigbird.components.ValueCell;
 
-public class KeyValuePair
+public class KeyValuePairVO
 {
     private var _key:KeyCell;
     private var _value:ValueCell;
 
-    public function KeyValuePair( key:KeyCell, value:ValueCell )
+    public function KeyValuePairVO( key:KeyCell, value:ValueCell )
     {
         _key = key;
         _value = value;
@@ -31,7 +31,7 @@ public class KeyValuePair
 
     public function getPrecis( len:int = 20 ):String
     {
-        return (_value.content.length <= len ) ? _value.content.slice( 0, len ) + "..." : _value.content;
+        return (_value.content.length <= len ) ? _value.content : _value.content.slice( 0, len ) + "...";
     }
 
     public function toString():String

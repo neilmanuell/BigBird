@@ -1,6 +1,6 @@
 package bigbird.systems
 {
-import bigbird.components.BigbirdProgress;
+import bigbird.components.BigBirdProgress;
 import bigbird.factories.EntityFactory;
 import bigbird.nodes.DecodeNode;
 
@@ -27,7 +27,7 @@ public class ProgressSystemTest
     private var _game:MockGame;
     private var _stateMachine:StateMachine;
     private var _decodeNodes:NodeList;
-    private var _progress:BigbirdProgress;
+    private var _progress:BigBirdProgress;
     private var _classUnderTest:ProgressSystem;
 
     [Before(order=1, async, timeout=5000)]
@@ -43,7 +43,8 @@ public class ProgressSystemTest
     {
         _stateMachine = nice( StateMachine );
         _game = new MockGame();
-        _progress = new BigbirdProgress();
+        //todo: add progress signal here;
+        _progress = new BigBirdProgress( null );
         const factory:EntityFactory = new EntityFactory( _game );
         factory.createDocument( DOCUMENT_NAME, DOCUMENT_FULL_XML );
         factory.createDocument( DOCUMENT_NAME, DOCUMENT_FULL_XML );
@@ -118,6 +119,7 @@ public class ProgressSystemTest
         _classUnderTest.update( 0 );
 
         assertThat( _stateMachine, not( received().method( "exitDecodingState" ).once() ) );
+
     }
 
     private function prepareSomeProgress():void

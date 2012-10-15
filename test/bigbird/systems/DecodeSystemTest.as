@@ -6,7 +6,6 @@ import bigbird.nodes.DecodeNode;
 
 import org.hamcrest.assertThat;
 import org.hamcrest.core.not;
-import org.hamcrest.number.lessThan;
 import org.hamcrest.object.equalTo;
 
 import supporting.MockGame;
@@ -64,7 +63,7 @@ public class DecodeSystemTest
         _node.progress.chunkingSize = 50;
         _node.progress.workDone = -1;
         _classUnderTest.updateNode( _node, 0 );
-        assertThat( _node.progress.workDone, equalTo( 50 ) );
+        assertThat( _node.progress.workDone, equalTo( 100 ) );
     }
 
     [Test]
@@ -72,7 +71,7 @@ public class DecodeSystemTest
     {
         _node.progress.chunkingSize = 700;
         _classUnderTest.updateNode( _node, 0 );
-        assertThat( _node.progress.workDone, lessThan( _node.progress.totalWork ) );
+        assertThat( _node.progress.workDone, equalTo( _node.progress.totalWork ) );
     }
 
 

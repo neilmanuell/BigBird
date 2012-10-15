@@ -4,8 +4,8 @@ import bigbird.components.KeyCell;
 import bigbird.components.KeyValuePairState;
 import bigbird.components.KeyValuePairUID;
 import bigbird.components.ValueCell;
-import bigbird.core.KeyValuePair;
 import bigbird.core.KeyValuePairSignal;
+import bigbird.core.vos.KeyValuePairVO;
 import bigbird.nodes.KeyValuePairNode;
 
 import org.hamcrest.assertThat;
@@ -19,7 +19,7 @@ import supporting.values.VALUE_CELL_XML;
 
 public class DispatchDecodedSystemTest
 {
-    private var _recievedData:KeyValuePair;
+    private var _recievedData:KeyValuePairVO;
     private var _recievedDocumentName:String;
     private var _numTimesDispatched:int;
     private var _classUnderTest:DispatchDecodedSystem;
@@ -93,7 +93,7 @@ public class DispatchDecodedSystemTest
 
         _classUnderTest.updateNode( node, 0 );
 
-        assertThat( _recievedData, instanceOf( KeyValuePair ) );
+        assertThat( _recievedData, instanceOf( KeyValuePairVO ) );
     }
 
     [Test]
@@ -118,7 +118,7 @@ public class DispatchDecodedSystemTest
         assertThat( _recievedData.content, equalTo( "QAA" ) );
     }
 
-    private function onDispatch( documentName:String, data:KeyValuePair ):void
+    private function onDispatch( documentName:String, data:KeyValuePairVO ):void
     {
         _numTimesDispatched++;
         _recievedDocumentName = documentName;

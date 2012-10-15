@@ -5,13 +5,14 @@ import bigbird.factories.SingletonSystemFactory;
 
 public class StateMachine
 {
+    private var _state:BigBirdState;
+
     private var _factory:SingletonSystemFactory;
-    private var _state:BigBirdState
 
     public function StateMachine( state:BigBirdState, factory:SingletonSystemFactory )
     {
         _factory = factory;
-        _state = state;
+        this._state = state;
     }
 
     public function enterDecodingState():void
@@ -19,6 +20,7 @@ public class StateMachine
         if ( _state.isDecoding )return;
         _factory.addSystem( SystemName.DECODE );
         _factory.addSystem( SystemName.DISPATCH_DECODED );
+        _factory.addSystem( SystemName.PROGRESS );
         _state.isDecoding = true;
     }
 
@@ -29,6 +31,5 @@ public class StateMachine
         _factory.removeSystem( SystemName.DISPATCH_DECODED );
         _state.isDecoding = false;
     }
-
 }
 }

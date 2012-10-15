@@ -1,6 +1,6 @@
 package bigbird.systems
 {
-import bigbird.components.BigbirdProgress;
+import bigbird.components.BigBirdProgress;
 import bigbird.nodes.DecodeNode;
 
 import net.richardlord.ash.core.Game;
@@ -11,9 +11,9 @@ public class ProgressSystem extends System
 {
     private var _stateMachine:StateMachine;
     private var _decodeNodes:NodeList;
-    private var _progress:BigbirdProgress;
+    private var _progress:BigBirdProgress;
 
-    public function ProgressSystem( progress:BigbirdProgress, stateMachine:StateMachine )
+    public function ProgressSystem( progress:BigBirdProgress, stateMachine:StateMachine )
     {
         _stateMachine = stateMachine;
         _progress = progress;
@@ -27,8 +27,6 @@ public class ProgressSystem extends System
     override public function removeFromGame( game:Game ):void
     {
         _decodeNodes = null;
-        _stateMachine = null;
-        _progress = null;
     }
 
     override public function update( time:Number ):void

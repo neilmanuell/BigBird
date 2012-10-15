@@ -1,23 +1,22 @@
-package supporting.utils
+package bigbird.configuration
 {
+import bigbird.components.BigBirdProgress;
 import bigbird.components.SystemFactoryConfig;
-import bigbird.factories.SingletonSystemFactory;
+import bigbird.factories.*;
 import bigbird.systems.DecodeFromRawDocument;
 import bigbird.systems.DecodeSystem;
 import bigbird.systems.DispatchDecodedSystem;
+import bigbird.systems.ProgressSystem;
 import bigbird.systems.SystemName;
 import bigbird.systems.SystemPriority;
 
-import net.richardlord.ash.core.Game;
 import net.richardlord.ash.core.System;
 
-public function configureSingletonSystemFactory( game:Game ):SingletonSystemFactory
+public function configureSingletonSystemFactory( factory:SingletonSystemFactory, bigbird:BigBird ):void
 {
-    const factory:SingletonSystemFactory = new SingletonSystemFactory( game );
-
     const createDecodeSystem:Function = function ():System
     {
-        return new DecodeSystem( new DecodeFromRawDocument( game ) );
+        return new DecodeSystem( new DecodeFromRawDocument( bigbird.game ) );
     }
 
     const decodeConfig:SystemFactoryConfig = new SystemFactoryConfig(
@@ -31,7 +30,7 @@ public function configureSingletonSystemFactory( game:Game ):SingletonSystemFact
 
     const createDispatchDecodedSystem:Function = function ():System
     {
-        return new DispatchDecodedSystem( null );
+        return new DispatchDecodedSystem( bigbird.onDecoded );
     }
 
     const dispatchDecodedConfig:SystemFactoryConfig = new SystemFactoryConfig(
@@ -42,7 +41,21 @@ public function configureSingletonSystemFactory( game:Game ):SingletonSystemFact
 
     factory.register( dispatchDecodedConfig );
 
-    return factory;
+
+    const createProcessSystem:Function = function ():System
+    {
+        const progress:BigBirdProgress = new BigBirdProgress( bigbird.onProgress );
+        return new ProgressSystem( progress, bigbird.stateMachine );
+    }
+
+    const processSystemConfig:SystemFactoryConfig = new SystemFactoryConfig(
+            SystemName.PROGRESS,
+            ProgressSystem,
+            SystemPriority.PROGRESS_SYSTEM,
+            createProcessSystem );
+
+    factory.register( processSystemConfig );
+
 }
 
 }

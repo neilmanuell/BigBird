@@ -1,4 +1,4 @@
-package bigbird
+package bigbird.integration
 {
 import bigbird.core.vos.KeyValuePairVO;
 
@@ -10,7 +10,7 @@ import org.hamcrest.assertThat;
 import supporting.MockBigBird;
 import supporting.values.DOCUMENT_FULL_SMALL_XML;
 
-public class BigBirdTest
+public class BigBirdWellFormattedTest
 {
     private var _classUnderTest:MockBigBird;
     private const _recieved:Array = [];

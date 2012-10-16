@@ -8,12 +8,17 @@ public class RawWordDocument
     public var wNS:Namespace;
 
     private var _cellData:XMLList;
-    private var _length:int;
+    private var _length:int = 0;
     private var _count:int = 0;
 
     public function RawWordDocument( name:String, rawData:XML )
     {
         this.name = name;
+        setData( rawData );
+    }
+
+    public function setData( rawData:XML ):void
+    {
         this.rawData = rawData;
         if ( this.rawData != null )
         {
@@ -21,7 +26,6 @@ public class RawWordDocument
             _cellData = rawData..wNS::tc;
             _length = _cellData.length();
         }
-
     }
 
     public function get hasNext():Boolean

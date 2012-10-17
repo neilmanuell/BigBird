@@ -26,7 +26,7 @@ public class DecodeFromRawDocumentTest
 
     public function prepareDocument( documentData:XML = null ):void
     {
-        _document = new RawWordDocument( DOCUMENT_NAME, documentData || DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
+        _document = new RawWordDocument( documentData || DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
     }
 
     [After]

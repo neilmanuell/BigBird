@@ -10,7 +10,6 @@ import org.hamcrest.object.equalTo;
 
 import supporting.MockGame;
 import supporting.values.DOCUMENT_FULL_XML;
-import supporting.values.DOCUMENT_NAME;
 
 public class DecodeSystemTest
 {
@@ -23,7 +22,7 @@ public class DecodeSystemTest
     public function before():void
     {
         _node = new DecodeNode();
-        _node.document = new RawWordDocument( DOCUMENT_NAME, DOCUMENT_FULL_XML );
+        _node.document = new RawWordDocument( DOCUMENT_FULL_XML );
         _node.progress = new Progress( _node.document.length );
         _game = new MockGame();
 

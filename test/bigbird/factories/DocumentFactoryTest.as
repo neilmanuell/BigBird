@@ -2,15 +2,18 @@ package bigbird.factories
 {
 import bigbird.components.*;
 
+import flash.net.URLRequest;
+
 import net.richardlord.ash.core.Entity;
 
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.instanceOf;
+import org.hamcrest.object.strictlyEqualTo;
 
 import supporting.MockGame;
-import supporting.values.DOCUMENT_NAME;
 import supporting.values.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
+import supporting.values.DOCUMENT_URL;
 
 public class DocumentFactoryTest
 {
@@ -34,50 +37,51 @@ public class DocumentFactoryTest
     [Test]
     public function createDocument_returns_instanceOf_Entity():void
     {
-        assertThat( _classUnderTest.createDocument( DOCUMENT_NAME, DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML ), instanceOf( Entity ) );
+        assertThat( _classUnderTest.createDocument( DOCUMENT_URL ), instanceOf( Entity ) );
     }
 
     [Test]
     public function createDocument_adds_Entity_to_Game():void
     {
-        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_NAME, DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
+        _classUnderTest.createDocument( DOCUMENT_URL );
         assertThat( _game.entitiesReceived.length, equalTo( 1 ) );
-    }
-
-    [Test]
-    public function createDocument_returns_Entity_containing_RawWordDocument():void
-    {
-        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_NAME, DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
-        assertThat( entity.get( RawWordDocument ), instanceOf( RawWordDocument ) );
-    }
-
-    [Test]
-    public function returns_RawWordDocument_with_given_name():void
-    {
-        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_NAME, DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
-        assertThat( entity.get( RawWordDocument ).name, equalTo( DOCUMENT_NAME ) );
-    }
-
-    [Test]
-    public function returns_RawWordDocument_with_given_rawData():void
-    {
-        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_NAME, DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
-        assertThat( entity.get( RawWordDocument ).rawData, equalTo( DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML ) );
     }
 
     [Test]
     public function createDocument_returns_Entity_containing_instanceOf_Progress():void
     {
-        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_NAME, DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
+        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_URL );
         assertThat( entity.get( Progress ), instanceOf( Progress ) );
     }
 
     [Test]
-    public function totalWork_set_onProgress():void
+    public function createDocument_returns_Entity_containing_instanceOf_URLRequest():void
     {
-        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_NAME, DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
-        const progress:Progress = entity.get( Progress );
-        assertThat( progress.totalWork, equalTo( 2 ) );
+        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_URL );
+        assertThat( entity.get( URLRequest ), instanceOf( URLRequest ) );
+    }
+
+    [Test]
+    public function createDocument_returns_Entity_were_URL_has_value_set():void
+    {
+        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_URL );
+        assertThat( entity.get( URLRequest ), strictlyEqualTo( DOCUMENT_URL ) );
+    }
+
+    [Test]
+    public function createDocument_returns_Entity_containing_instanceOf_DocumentAccess():void
+    {
+        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_URL );
+        assertThat( entity.get( DocumentAccess ), instanceOf( DocumentAccess ) );
+    }
+
+    [Test]
+    public function createDocument_adds_Entity_to_DocumentAccess():void
+    {
+        const entity:Entity = _classUnderTest.createDocument( DOCUMENT_URL );
+        const access:DocumentAccess = entity.get( DocumentAccess );
+        access.addRawData( DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
+        assertThat( entity.get( RawWordDocument ), instanceOf( RawWordDocument ) );
     }
 
 

@@ -69,7 +69,7 @@ public class BigBird extends Sprite
 
     public function addRawDocumentXML( url:URLRequest, xml:XML ):void
     {
-        _entityFactory.createDocument( "hello", xml );
+        _entityFactory.createWordDocument( xml );
         stateMachine.enterDecodingState();
         start();
     }

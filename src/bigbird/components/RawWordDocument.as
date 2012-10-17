@@ -4,16 +4,14 @@ public class RawWordDocument
 {
 
     public var rawData:XML;
-    public var name:String;
     public var wNS:Namespace;
 
     private var _cellData:XMLList;
     private var _length:int = 0;
     private var _count:int = 0;
 
-    public function RawWordDocument( name:String, rawData:XML )
+    public function RawWordDocument( rawData:XML )
     {
-        this.name = name;
         setData( rawData );
     }
 

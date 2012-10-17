@@ -19,8 +19,6 @@ import org.hamcrest.object.equalTo;
 
 import supporting.MockGame;
 import supporting.values.DOCUMENT_FULL_XML;
-import supporting.values.DOCUMENT_NAME;
-import supporting.values.DOCUMENT_NAME_TWO;
 
 public class ProgressSystemTest
 {
@@ -46,9 +44,9 @@ public class ProgressSystemTest
         //todo: add progress signal here;
         _progress = new BigBirdProgress( null );
         const factory:EntityFactory = new EntityFactory( _game );
-        factory.createDocument( DOCUMENT_NAME, DOCUMENT_FULL_XML );
-        factory.createDocument( DOCUMENT_NAME, DOCUMENT_FULL_XML );
-        factory.createDocument( DOCUMENT_NAME_TWO, DOCUMENT_FULL_XML );
+        factory.createWordDocument( DOCUMENT_FULL_XML );
+        factory.createWordDocument( DOCUMENT_FULL_XML );
+        factory.createWordDocument( DOCUMENT_FULL_XML );
 
         _decodeNodes = _game.getNodeList( DecodeNode );
         _classUnderTest = new ProgressSystem( _progress, _stateMachine );

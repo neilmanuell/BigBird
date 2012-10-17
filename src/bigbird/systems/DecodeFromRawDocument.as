@@ -70,8 +70,8 @@ public class DecodeFromRawDocument implements Decoder
             keyCellData = MISSING_CELL_XML;
             valueCellData = first;
         }
-
-        _factory.createKeyValuePair( document.name, keyCellData, valueCellData );
+        _factory.createKeyValuePair( "", keyCellData, valueCellData );
+        // _factory.createKeyValuePair( document.name, keyCellData, valueCellData );
     }
 
     private static function testKeyValuePairing( firstCell:XML, secondCell:XML, wNS:Namespace ):uint

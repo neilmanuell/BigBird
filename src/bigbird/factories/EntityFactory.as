@@ -19,9 +19,10 @@ public class EntityFactory
     public function createDocument( request:URLRequest ):Entity
     {
         const entity:Entity = new Entity();
-        entity.add( request );
+        const access:DocumentState = new DocumentState( entity );
+        access.addURL( request );
         entity.add( new Progress( 0 ) );
-        entity.add( new DocumentAccess( entity ) );
+        entity.add( access );
         _game.addEntity( entity );
         return entity;
     }

@@ -7,6 +7,9 @@ public class BigBirdProgress
     public var decodingWorkDone:int;
     public var totalDecodingWork:int;
 
+    public var loadingWorkDone:int;
+    public var totalLoadingWork:int;
+
     private var _onProgress:ProgressSignal;
 
     public function BigBirdProgress( onProgress:ProgressSignal )
@@ -21,12 +24,12 @@ public class BigBirdProgress
 
     public function  get allWorkDone():Number
     {
-        return  totalDecodingWork;
+        return  totalDecodingWork + totalLoadingWork;
     }
 
     public function  get totalWork():Number
     {
-        return  decodingWorkDone;
+        return  decodingWorkDone + loadingWorkDone;
     }
 }
 }

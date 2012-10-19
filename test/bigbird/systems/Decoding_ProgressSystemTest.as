@@ -20,7 +20,7 @@ import org.hamcrest.object.equalTo;
 import supporting.MockGame;
 import supporting.values.DOCUMENT_FULL_XML;
 
-public class ProgressSystemTest
+public class Decoding_ProgressSystemTest
 {
     private var _game:MockGame;
     private var _stateMachine:StateMachine;

@@ -31,5 +31,10 @@ public class StateMachine
         _factory.removeSystem( SystemName.DISPATCH_DECODED );
         _state.isDecoding = false;
     }
+
+    public function exitLoadingState():void
+    {
+
+    }
 }
 }

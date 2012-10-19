@@ -1,49 +1,40 @@
 package bigbird.systems
 {
 import bigbird.components.BigBirdProgress;
-import bigbird.nodes.DecodeNode;
 
 import net.richardlord.ash.core.Game;
-import net.richardlord.ash.core.NodeList;
 import net.richardlord.ash.core.System;
 
 public class ProgressSystem extends System
 {
-    private var _stateMachine:StateMachine;
-    private var _decodeNodes:NodeList;
-    private var _progress:BigBirdProgress;
+
+
+    private var _loadingProgress:LoadingProgress;
+    private var _decodingProgress:DecodingProgress;
 
     public function ProgressSystem( progress:BigBirdProgress, stateMachine:StateMachine )
     {
-        _stateMachine = stateMachine;
-        _progress = progress;
+        _decodingProgress = new DecodingProgress( progress, stateMachine );
+        _loadingProgress = new LoadingProgress( progress, stateMachine );
     }
 
     override public function addToGame( game:Game ):void
     {
-        _decodeNodes = game.getNodeList( DecodeNode )
+        _decodingProgress.addToGame( game );
+        _loadingProgress.addToGame( game );
     }
 
     override public function removeFromGame( game:Game ):void
     {
-        _decodeNodes = null;
+        _decodingProgress.removeFromGame( game );
+        _loadingProgress.removeFromGame( game );
     }
 
     override public function update( time:Number ):void
     {
-        _progress.totalDecodingWork = 0;
-        _progress.decodingWorkDone = 0;
+        _loadingProgress.update( time );
+        _decodingProgress.update( time );
 
-        for ( var node:DecodeNode = _decodeNodes.head; node; node = node.next )
-        {
-            _progress.totalDecodingWork += node.progress.totalWork;
-            _progress.decodingWorkDone += node.progress.workDone;
-        }
-
-        if ( _progress.totalDecodingWork == _progress.decodingWorkDone )
-        {
-            _stateMachine.exitDecodingState();
-        }
     }
 
 

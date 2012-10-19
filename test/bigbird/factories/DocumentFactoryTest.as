@@ -1,6 +1,7 @@
 package bigbird.factories
 {
 import bigbird.components.*;
+import bigbird.io.Loader;
 
 import flash.net.URLRequest;
 
@@ -72,17 +73,19 @@ public class DocumentFactoryTest
     public function createDocument_returns_Entity_containing_instanceOf_DocumentAccess():void
     {
         const entity:Entity = _classUnderTest.createDocument( DOCUMENT_URL );
-        assertThat( entity.get( DocumentAccess ), instanceOf( DocumentAccess ) );
+        assertThat( entity.get( DocumentState ), instanceOf( DocumentState ) );
     }
 
     [Test]
     public function createDocument_adds_Entity_to_DocumentAccess():void
     {
         const entity:Entity = _classUnderTest.createDocument( DOCUMENT_URL );
-        const access:DocumentAccess = entity.get( DocumentAccess );
+        const access:DocumentState = entity.get( DocumentState );
         access.addRawData( DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
         assertThat( entity.get( RawWordDocument ), instanceOf( RawWordDocument ) );
     }
+
+
 
 
 }

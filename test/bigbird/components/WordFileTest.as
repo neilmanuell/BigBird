@@ -10,14 +10,14 @@ import org.hamcrest.object.strictlyEqualTo;
 
 import supporting.values.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
 
-public class RawWordDocumentTest
+public class WordFileTest
 {
-    private var _classUnderTest:RawWordDocument;
+    private var _classUnderTest:WordData;
 
     [Before]
     public function setUp():void
     {
-        _classUnderTest = new RawWordDocument( DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
+        _classUnderTest = new WordData( DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
     }
 
     [After]

@@ -1,4 +1,4 @@
-package bigbird.io
+package bigbird.components.io
 {
 import flash.events.Event;
 import flash.events.IOErrorEvent;
@@ -6,22 +6,35 @@ import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
-public class XMLLoader implements Loader
+public class XMLLoader implements DataLoader
 {
-    private var _loader:URLLoader;
-    private var _errorMsg:String;
-
     public function XMLLoader( request:URLRequest )
     {
         _loader = new URLLoader( request );
+        _loader.addEventListener( Event.COMPLETE, onComplete );
         _loader.addEventListener( IOErrorEvent.IO_ERROR, onError );
         _loader.addEventListener( SecurityErrorEvent.SECURITY_ERROR, onError );
     }
 
-    private function onError( event:Event ):void
+    private var _loader:URLLoader;
+
+    public function get success():Boolean
     {
-        _errorMsg = event.toString();
-        destroy();
+        return (_errorMsg == null);
+    }
+
+    private var _errorMsg:String;
+
+    public function get errorMsg():String
+    {
+        return _errorMsg;
+    }
+
+    private var _isLoadComplete:Boolean;
+
+    public function get isLoadComplete():Boolean
+    {
+        return _isLoadComplete;
     }
 
     public function get bytesLoaded():uint
@@ -36,25 +49,29 @@ public class XMLLoader implements Loader
 
     public function get data():XML
     {
-        destroy();
         return new XML( _loader.data );
     }
 
-    private function destroy():void
+    private function destroyLoader():void
     {
+        _loader.removeEventListener( Event.COMPLETE, onComplete );
         _loader.removeEventListener( IOErrorEvent.IO_ERROR, onError );
         _loader.removeEventListener( SecurityErrorEvent.SECURITY_ERROR, onError );
         _loader = null;
     }
 
-    public function get errorMsg():String
+    private function onError( event:Event ):void
     {
-        return _errorMsg;
+        _errorMsg = event.toString();
+        _isLoadComplete = true;
+        destroyLoader();
     }
 
-    public function get success():Boolean
+    private function onComplete( event:Event ):void
     {
-        return (_errorMsg == null);
+        _isLoadComplete = true;
+        destroyLoader();
     }
+
 }
 }

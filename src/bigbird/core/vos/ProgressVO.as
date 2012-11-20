@@ -11,24 +11,14 @@ public class ProgressVO
         _progress = progress;
     }
 
-    public function get decodingWorkDone():int
-    {
-        return _progress.decodingWorkDone;
-    }
-
-    public function get totalDecodingWork():int
-    {
-        return _progress.decodingWorkDone
-    }
-
     public function get totalWork():int
     {
         return _progress.totalWork
     }
 
-    public function get allWorkDone():int
+    public function get workDone():int
     {
-        return _progress.allWorkDone
+        return _progress.workDone
     }
 
 

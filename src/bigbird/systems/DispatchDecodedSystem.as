@@ -18,9 +18,9 @@ public class DispatchDecodedSystem extends ListIteratingSystem
 
     internal function updateNode( node:KeyValuePairNode, time:Number ):void
     {
-        if ( node.state.hasDispatched )return;
-        node.state.hasDispatched = true;
-        _signal.dispatchKeyValuePair( node.uid.groupID, node.key, node.value );
+        /* if ( node.state.hasDispatched )return;
+         node.state.hasDispatched = true;
+         _signal.dispatchKeyValuePair( node.uid.groupID, node.key, node.value );*/
     }
 
     public function get onKeyValuePairAdded():Signal2

@@ -1,6 +1,6 @@
 package bigbird.components
 {
-public class RawWordDocument
+public class WordData
 {
 
     public var rawData:XML;
@@ -10,7 +10,7 @@ public class RawWordDocument
     private var _length:int = 0;
     private var _count:int = 0;
 
-    public function RawWordDocument( rawData:XML )
+    public function WordData( rawData:XML = null )
     {
         setData( rawData );
     }

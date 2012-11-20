@@ -1,13 +1,11 @@
 package
 {
 
-import bigbird.components.BigBirdState;
-import bigbird.configuration.configureSingletonSystemFactory;
+import bigbird.components.BigBirdProgress;
 import bigbird.core.KeyValuePairSignal;
 import bigbird.core.ProgressSignal;
-import bigbird.factories.EntityFactory;
-import bigbird.factories.SingletonSystemFactory;
-import bigbird.systems.StateMachine;
+import bigbird.factories.WordEntityFactory;
+import bigbird.systems.utils.addLoadingSystems;
 
 import flash.display.Sprite;
 import flash.net.URLRequest;
@@ -21,10 +19,10 @@ public class BigBird extends Sprite
     public const onProgress:ProgressSignal = new ProgressSignal();
 
     public const game:Game = new Game();
-    public var stateMachine:StateMachine;
 
     private var _tickProvider:FrameTickProvider;
-    private var _entityFactory:EntityFactory;
+    private var _wordEntityFactory:WordEntityFactory;
+    private var _progress:BigBirdProgress;
 
     public function BigBird()
     {
@@ -34,20 +32,11 @@ public class BigBird extends Sprite
     private function prepare():void
     {
         _tickProvider = new FrameTickProvider( this );
-        _entityFactory = new EntityFactory( game );
-        const factory:SingletonSystemFactory = new SingletonSystemFactory( game );
-        stateMachine = createStateMachine( factory );
-        configureSingletonSystemFactory( factory, this );
+        _wordEntityFactory = new WordEntityFactory( game );
+        _progress = new BigBirdProgress( onProgress );
+
     }
 
-    public function createStateMachine( factory:SingletonSystemFactory ):StateMachine
-    {
-        const state:BigBirdState = new BigBirdState( game.updateComplete );
-        state.onActive.add( start );
-        state.onInactive.add( stop );
-
-        return new StateMachine( state, factory );
-    }
 
     public function start():void
     {
@@ -57,21 +46,15 @@ public class BigBird extends Sprite
 
     public function stop():void
     {
-        _tickProvider.remove( game.update );
         _tickProvider.stop();
+        _tickProvider.remove( game.update );
     }
 
 
     public function load( url:URLRequest ):void
     {
-
-    }
-
-    public function addRawDocumentXML( url:URLRequest, xml:XML ):void
-    {
-        _entityFactory.createWordDocument( xml );
-        stateMachine.enterDecodingState();
-        start();
+        _wordEntityFactory.createWordFileEntity( url );
+        addLoadingSystems( game, _progress );
     }
 
 

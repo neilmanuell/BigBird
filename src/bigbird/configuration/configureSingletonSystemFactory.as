@@ -3,10 +3,11 @@ package bigbird.configuration
 import bigbird.components.BigBirdProgress;
 import bigbird.components.SystemFactoryConfig;
 import bigbird.factories.*;
-import bigbird.systems.DecodeFromRawDocument;
+import bigbird.systems.DecodeFromWordFile;
 import bigbird.systems.DecodeSystem;
+import bigbird.systems.DecodingProgress;
 import bigbird.systems.DispatchDecodedSystem;
-import bigbird.systems.ProgressSystem;
+import bigbird.systems.LoadProgressSystem;
 import bigbird.systems.SystemName;
 import bigbird.systems.SystemPriority;
 
@@ -16,7 +17,7 @@ public function configureSingletonSystemFactory( factory:SingletonSystemFactory,
 {
     const createDecodeSystem:Function = function ():System
     {
-        return new DecodeSystem( new DecodeFromRawDocument( bigbird.game ) );
+        return new DecodeSystem( new DecodeFromWordFile( bigbird.game ) );
     }
 
     const decodeConfig:SystemFactoryConfig = new SystemFactoryConfig(
@@ -41,20 +42,34 @@ public function configureSingletonSystemFactory( factory:SingletonSystemFactory,
 
     factory.register( dispatchDecodedConfig );
 
+    const progress:BigBirdProgress = new BigBirdProgress( bigbird.onProgress );
 
-    const createProcessSystem:Function = function ():System
+    const createLoadProcessSystem:Function = function ():System
     {
-        const progress:BigBirdProgress = new BigBirdProgress( bigbird.onProgress );
-        return new ProgressSystem( progress, bigbird.stateMachine );
+        return new LoadProgressSystem( progress );
     }
 
-    const processSystemConfig:SystemFactoryConfig = new SystemFactoryConfig(
-            SystemName.PROGRESS,
-            ProgressSystem,
+    const loadProcessSystemConfig:SystemFactoryConfig = new SystemFactoryConfig(
+            SystemName.LOAD_PROGRESS,
+            LoadProgressSystem,
             SystemPriority.PROGRESS_SYSTEM,
-            createProcessSystem );
+            createLoadProcessSystem );
 
-    factory.register( processSystemConfig );
+    factory.register( loadProcessSystemConfig );
+
+
+    const createDecodingProcessSystem:Function = function ():System
+    {
+        return new DecodingProgress( progress );
+    }
+
+    const decodeProcessSystemConfig:SystemFactoryConfig = new SystemFactoryConfig(
+            SystemName.DECODE_PROGRESS,
+            DecodingProgress,
+            SystemPriority.PROGRESS_SYSTEM,
+            createDecodingProcessSystem );
+
+    factory.register( decodeProcessSystemConfig );
 
 }
 

@@ -1,18 +1,15 @@
 package bigbird.nodes
 {
-import bigbird.components.DocumentState;
-import bigbird.components.DocumentLoader;
-import bigbird.components.Progress;
-
-import flash.net.URLRequest;
+import bigbird.components.WordData;
+import bigbird.components.io.Loader;
 
 import net.richardlord.ash.core.Node;
+import net.richardlord.ash.fsm.EntityStateMachine;
 
 public class LoadingNode extends Node
 {
-    public var url:URLRequest;
-    public var loader:DocumentLoader;
-    public var state:DocumentState;
-    public var progress:Progress;
+    public var loader:Loader;
+    public var wordData:WordData;
+    public var fsm:EntityStateMachine;
 }
 }

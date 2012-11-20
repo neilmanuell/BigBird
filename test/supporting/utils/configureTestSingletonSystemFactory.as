@@ -2,7 +2,7 @@ package supporting.utils
 {
 import bigbird.components.SystemFactoryConfig;
 import bigbird.factories.SingletonSystemFactory;
-import bigbird.systems.DecodeFromRawDocument;
+import bigbird.systems.DecodeFromWordFile;
 import bigbird.systems.DecodeSystem;
 import bigbird.systems.DispatchDecodedSystem;
 import bigbird.systems.SystemName;
@@ -17,7 +17,7 @@ public function configureTestSingletonSystemFactory( game:Game ):SingletonSystem
 
     const createDecodeSystem:Function = function ():System
     {
-        return new DecodeSystem( new DecodeFromRawDocument( game ) );
+        return new DecodeSystem( new DecodeFromWordFile( game ) );
     }
 
     const decodeConfig:SystemFactoryConfig = new SystemFactoryConfig(

@@ -8,7 +8,6 @@ import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
 
 import supporting.MockBigBird;
-import supporting.values.DOCUMENT_FULL_SMALL_XML;
 
 public class BigBirdWellFormattedTest
 {
@@ -42,11 +41,11 @@ public class BigBirdWellFormattedTest
     }
 
 
-    [Test(async)]
+    //[Test(async)]
     public function adding_document_sets_isActive_true():void
     {
         _classUnderTest.onDecoded.add( onDecoded );
-        _classUnderTest.addRawDocumentXML( null, DOCUMENT_FULL_SMALL_XML );
+        //_classUnderTest.addRawDocumentXML( null, DOCUMENT_FULL_SMALL_XML );
         var asyncHandler:Function = Async.asyncHandler( this, handleComplete, 500, null );
         _classUnderTest.addEventListener( Event.COMPLETE, asyncHandler );
     }

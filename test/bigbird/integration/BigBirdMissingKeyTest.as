@@ -42,7 +42,7 @@ public class BigBirdMissingKeyTest
     }
 
 
-    [Test(async)]
+    // [Test(async)]
     public function adding_document_sets_isActive_true():void
     {
         _classUnderTest.onDecoded.add( onDecoded );

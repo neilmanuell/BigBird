@@ -4,11 +4,8 @@ import bigbird.core.ProgressSignal;
 
 public class BigBirdProgress
 {
-    public var decodingWorkDone:int;
-    public var totalDecodingWork:int;
-
-    public var loadingWorkDone:int;
-    public var totalLoadingWork:int;
+    public var workDone:int;
+    public var totalWork:int;
 
     private var _onProgress:ProgressSignal;
 
@@ -22,14 +19,6 @@ public class BigBirdProgress
         _onProgress.dispatchProgress( this );
     }
 
-    public function  get allWorkDone():Number
-    {
-        return  totalDecodingWork + totalLoadingWork;
-    }
 
-    public function  get totalWork():Number
-    {
-        return  decodingWorkDone + loadingWorkDone;
-    }
 }
 }

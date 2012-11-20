@@ -1,7 +1,5 @@
 package bigbird.factories
 {
-import bigbird.components.*;
-
 import flash.events.Event;
 
 import mockolate.nice;
@@ -10,14 +8,14 @@ import mockolate.received;
 
 import net.richardlord.ash.core.Entity;
 import net.richardlord.ash.core.Game;
+import net.richardlord.ash.fsm.EntityStateMachine;
 
 import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
-import org.hamcrest.object.equalTo;
 import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
 
-import supporting.values.DOCUMENT_NAME;
+import supporting.values.DOCUMENT_URL;
 import supporting.values.KEY_CELL_XML;
 import supporting.values.VALUE_CELL_XML;
 
@@ -50,110 +48,102 @@ public class KeyValuePairFactoryTest
     }
 
     [Test]
-    public function testReturnsInstanceOfEntity():void
+    public function createKeyValuePair_returns_instanceOf_Entity():void
     {
-        assertThat( classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML ), instanceOf( Entity ) );
+        assertThat( classUnderTest.createKeyValuePair( DOCUMENT_URL, KEY_CELL_XML, VALUE_CELL_XML ), instanceOf( Entity ) );
     }
 
     [Test]
-    public function testReturnsEntityWithKeyCellInstance():void
+    public function createKeyValuePair_adds_Entity_to_Game():void
     {
-        const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
-        assertThat( entity.get( KeyCell ), instanceOf( KeyCell ) );
-    }
-
-    [Test]
-    public function testReturnsEntityWithValueCellInstance():void
-    {
-        const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
-        assertThat( entity.get( ValueCell ), instanceOf( ValueCell ) );
-    }
-
-    [Test]
-    public function testReturnsEntityWithUIDInstance():void
-    {
-        const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
-        assertThat( entity.get( KeyValuePairUID ), instanceOf( KeyValuePairUID ) );
-    }
-
-    [Test]
-    public function testKeyCellHas_KEY_CELL_DATA():void
-    {
-        const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
-        const xml:XML = KeyCell( entity.get( KeyCell ) ).rawData;
-        assertThat( xml, strictlyEqualTo( KEY_CELL_XML ) );
-    }
-
-    [Test]
-    public function testKeyCellHas_VALUE_CELL_DATA():void
-    {
-        const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
-        const xml:XML = ValueCell( entity.get( ValueCell ) ).rawData;
-        assertThat( xml, strictlyEqualTo( VALUE_CELL_XML ) );
-    }
-
-    [Test]
-    public function testKeyCellHas_KEY_VALUE_PAIR_STATE():void
-    {
-        const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
-        assertThat( entity.get( KeyValuePairState ), instanceOf( KeyValuePairState ) );
-    }
-
-    [Test]
-    public function UID_increases_with_each_call_for_same_doc_name():void
-    {
-        var entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
-        var uid:int = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
-        assertThat( uid, equalTo( 0 ) );
-
-        entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
-        uid = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
-        assertThat( uid, equalTo( 1 ) );
-
-        entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
-        uid = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
-        assertThat( uid, equalTo( 2 ) );
-    }
-
-    [Test]
-    public function UID_increases_per_doc_name():void
-    {
-        var entity:Entity = classUnderTest.createKeyValuePair( "name 1", KEY_CELL_XML, VALUE_CELL_XML );
-        var uid:int = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
-        assertThat( "name 1 - first call", uid, equalTo( 0 ) );
-
-        entity = classUnderTest.createKeyValuePair( "name 2", KEY_CELL_XML, VALUE_CELL_XML );
-        uid = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
-        assertThat( "name 2 - first call", uid, equalTo( 0 ) );
-
-        entity = classUnderTest.createKeyValuePair( "name 1", KEY_CELL_XML, VALUE_CELL_XML );
-        uid = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
-        assertThat( "name 1 - second call", uid, equalTo( 1 ) );
-
-        entity = classUnderTest.createKeyValuePair( "name 2", KEY_CELL_XML, VALUE_CELL_XML );
-        uid = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
-        assertThat( "name 2 - second call", uid, equalTo( 1 ) );
-
-
-    }
-
-
-    [Test]
-    public function groupID_set_on_KeyValuePairUID():void
-    {
-        var entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
-        var groupID:String = KeyValuePairUID( entity.get( KeyValuePairUID ) ).groupID;
-        assertThat( groupID, equalTo( DOCUMENT_NAME ) );
-
-
-    }
-
-    [Test]
-    public function testEntityIsAddedToGame():void
-    {
-        const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
+        const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_URL, KEY_CELL_XML, VALUE_CELL_XML );
         assertThat( game, received().method( "addEntity" ).arg( strictlyEqualTo( entity ) ).once() )
     }
+
+    [Test]
+    public function createKeyValuePair_returns_Entity_containing_instanceOf_EntityStateMachine():void
+    {
+        const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_URL, KEY_CELL_XML, VALUE_CELL_XML );
+        assertThat( entity.get( EntityStateMachine ), instanceOf( EntityStateMachine ) );
+    }
+
+    /* [Test]
+
+
+
+     [Test]
+     public function testKeyCellHas_KEY_CELL_DATA():void
+     {
+     const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
+     const xml:XML = KeyCell( entity.get( KeyCell ) ).rawData;
+     assertThat( xml, strictlyEqualTo( KEY_CELL_XML ) );
+     }
+
+     [Test]
+     public function testKeyCellHas_VALUE_CELL_DATA():void
+     {
+     const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
+     const xml:XML = ValueCell( entity.get( ValueCell ) ).rawData;
+     assertThat( xml, strictlyEqualTo( VALUE_CELL_XML ) );
+     }
+
+
+
+     [Test]
+     public function UID_increases_with_each_call_for_same_doc_name():void
+     {
+     var entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
+     var uid:int = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
+     assertThat( uid, equalTo( 0 ) );
+
+     entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
+     uid = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
+     assertThat( uid, equalTo( 1 ) );
+
+     entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
+     uid = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
+     assertThat( uid, equalTo( 2 ) );
+     }
+
+     [Test]
+     public function UID_increases_per_doc_name():void
+     {
+     var entity:Entity = classUnderTest.createKeyValuePair( "name 1", KEY_CELL_XML, VALUE_CELL_XML );
+     var uid:int = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
+     assertThat( "name 1 - first call", uid, equalTo( 0 ) );
+
+     entity = classUnderTest.createKeyValuePair( "name 2", KEY_CELL_XML, VALUE_CELL_XML );
+     uid = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
+     assertThat( "name 2 - first call", uid, equalTo( 0 ) );
+
+     entity = classUnderTest.createKeyValuePair( "name 1", KEY_CELL_XML, VALUE_CELL_XML );
+     uid = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
+     assertThat( "name 1 - second call", uid, equalTo( 1 ) );
+
+     entity = classUnderTest.createKeyValuePair( "name 2", KEY_CELL_XML, VALUE_CELL_XML );
+     uid = KeyValuePairUID( entity.get( KeyValuePairUID ) ).index;
+     assertThat( "name 2 - second call", uid, equalTo( 1 ) );
+
+
+     }
+
+
+     [Test]
+     public function groupID_set_on_KeyValuePairUID():void
+     {
+     var entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
+     var groupID:String = KeyValuePairUID( entity.get( KeyValuePairUID ) ).groupID;
+     assertThat( groupID, equalTo( DOCUMENT_NAME ) );
+
+
+     }
+
+     [Test]
+     public function testEntityIsAddedToGame():void
+     {
+     const entity:Entity = classUnderTest.createKeyValuePair( DOCUMENT_NAME, KEY_CELL_XML, VALUE_CELL_XML );
+     assertThat( game, received().method( "addEntity" ).arg( strictlyEqualTo( entity ) ).once() )
+     }*/
 
 
 }

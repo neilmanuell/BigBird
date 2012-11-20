@@ -1,13 +1,13 @@
 package bigbird.systems
 {
-import bigbird.components.RawWordDocument;
+import bigbird.components.WordData;
 import bigbird.components.utils.getCellColourFromData;
 import bigbird.factories.KeyValuePairFactory;
 import bigbird.values.MISSING_CELL_XML;
 
 import net.richardlord.ash.core.Game;
 
-public class DecodeFromRawDocument implements Decoder
+public class DecodeFromWordFile implements Decoder
 {
     private static const KEY_AND_VALUE_PASSED:uint = 0;
     private static const VALUE_AND_KEY_PASSED:uint = 1;
@@ -20,7 +20,7 @@ public class DecodeFromRawDocument implements Decoder
 
     private var _factory:KeyValuePairFactory;
 
-    public function DecodeFromRawDocument( game:Game )
+    public function DecodeFromWordFile( game:Game )
     {
         _factory = new KeyValuePairFactory( game );
     }
@@ -30,7 +30,7 @@ public class DecodeFromRawDocument implements Decoder
         var keyCellData:XML;
         var valueCellData:XML;
 
-        const document:RawWordDocument = value;
+        const document:WordData = value;
         const first:XML = document.getNext();
         const second:XML = document.getNext();
 
@@ -70,8 +70,7 @@ public class DecodeFromRawDocument implements Decoder
             keyCellData = MISSING_CELL_XML;
             valueCellData = first;
         }
-        _factory.createKeyValuePair( "", keyCellData, valueCellData );
-        // _factory.createKeyValuePair( document.name, keyCellData, valueCellData );
+        _factory.createKeyValuePair( null, keyCellData, valueCellData );
     }
 
     private static function testKeyValuePairing( firstCell:XML, secondCell:XML, wNS:Namespace ):uint

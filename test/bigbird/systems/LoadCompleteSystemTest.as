@@ -4,6 +4,8 @@ import bigbird.asserts.assertExpectedComponents;
 import bigbird.components.WordData;
 import bigbird.components.io.DataLoader;
 import bigbird.components.io.Loader;
+import bigbird.core.WordDataSignal;
+import bigbird.core.vos.DataLoaderVO;
 import bigbird.factories.WordEntityFactory;
 
 import flash.net.URLRequest;
@@ -20,7 +22,7 @@ import org.hamcrest.object.nullValue;
 
 import supporting.io.GrumpyDataLoader;
 import supporting.io.HappyDataLoader;
-import supporting.values.DOCUMENT_URL;
+import supporting.values.URL_WELL_FORMED_DOCUMENT_XML;
 
 public class LoadCompleteSystemTest
 {
@@ -29,22 +31,16 @@ public class LoadCompleteSystemTest
     private var _game:Game;
     private var _classUnderTest:LoadCompleteSystem;
     private var _factory:WordEntityFactory;
+    private var _onLoaded:WordDataSignal;
+    private var _recieved:Array = [];
 
-
-    /* [Before(order=1, async, timeout=5000)]
-     public function prepareMockolates():void
-     {
-     Async.proceedOnEvent( this,
-     prepare(   ),
-     Event.COMPLETE );
-     }
-     */
 
     [Before]
     public function before():void
     {
         _game = new Game();
-        _classUnderTest = new LoadCompleteSystem();
+        _onLoaded = new WordDataSignal();
+        _classUnderTest = new LoadCompleteSystem( _onLoaded );
         _game.addSystem( _classUnderTest, 0 );
         _factory = new WordEntityFactory( _game );
     }
@@ -55,6 +51,7 @@ public class LoadCompleteSystemTest
         _game = null;
         _factory = null;
         _classUnderTest = null;
+        _recieved = null;
     }
 
     [Test]
@@ -93,6 +90,7 @@ public class LoadCompleteSystemTest
         assertThat( wordData.length, greaterThan( 0 ) );
     }
 
+
     [Test]
     public function removes_self_after_3_inactive_updates():void
     {
@@ -127,12 +125,17 @@ public class LoadCompleteSystemTest
         const dataLoaderFactory:Function = function ( request:URLRequest ):DataLoader
         {
             if ( isComplete )
-                return new HappyDataLoader();
+                return new HappyDataLoader( request );
             else
-                return new GrumpyDataLoader();
+                return new GrumpyDataLoader( request );
         };
 
-        return _factory.createWordFileEntity( DOCUMENT_URL, dataLoaderFactory );
+        return _factory.createWordFileEntity( URL_WELL_FORMED_DOCUMENT_XML, dataLoaderFactory );
+    }
+
+    private function onLoaded( wordData:DataLoaderVO ):void
+    {
+        _recieved.push( wordData )
     }
 
 

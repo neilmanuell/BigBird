@@ -27,13 +27,7 @@ public class WordFileTest
     }
 
     [Test]
-    public function testNameSetFromConstructor():void
-    {
-        //  assertThat( _classUnderTest.name, equalTo( DOCUMENT_NAME ) );
-    }
-
-    [Test]
-    public function testRawDataSetFromConstructor():void
+    public function raw_data_set_from_constructor():void
     {
         assertThat( _classUnderTest.rawData, strictlyEqualTo( DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML ) );
     }

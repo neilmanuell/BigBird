@@ -26,14 +26,12 @@ public class KeyValuePairFactory
 
     public function createKeyValuePair( request:URLRequest, keyCellData:XML, valueCellData:XML ):Entity
     {
+        if ( _indices[request] == null ) _indices[request] = 0;
         const entity:Entity = new Entity();
         const fsm:EntityStateMachine = new EntityStateMachine( entity );
         const index:KeyValuePairIndex = new KeyValuePairIndex( _indices[request]++ );
         const keyCell:KeyCell = new KeyCell( keyCellData, keyCellData.namespace( "w" ) );
         const valueCell:ValueCell = new ValueCell( valueCellData, valueCellData.namespace( "w" ) );
-
-        if ( _indices[request] == null ) _indices[request] = 0;
-
 
         fsm.createState( EntityStateNames.PRE_DISPATCH )
                 .add( KeyValuePairIndex ).withInstance( index )
@@ -46,8 +44,9 @@ public class KeyValuePairFactory
                 .add( KeyCell ).withInstance( keyCell )
                 .add( ValueCell ).withInstance( valueCell );
 
-
         entity.add( fsm );
+
+        fsm.changeState( EntityStateNames.PRE_DISPATCH )
 
         game.addEntity( entity );
 

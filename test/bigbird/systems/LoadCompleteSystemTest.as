@@ -1,6 +1,7 @@
 package bigbird.systems
 {
 import bigbird.asserts.assertExpectedComponents;
+import bigbird.components.Chunker;
 import bigbird.components.WordData;
 import bigbird.components.io.DataLoader;
 import bigbird.components.io.Loader;
@@ -66,7 +67,7 @@ public class LoadCompleteSystemTest
     [Test]
     public function update_sets_Entity_state_to_DECODING_on_complete():void
     {
-        const expectedComponents:Array = defaultComponents.concat( [  WordData] );
+        const expectedComponents:Array = defaultComponents.concat( [  WordData, Chunker] );
         const entity:Entity = createEntity( true );
         update();
         assertExpectedComponents( expectedComponents, entity );

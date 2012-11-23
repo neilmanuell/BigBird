@@ -5,8 +5,6 @@ import bigbird.components.utils.getCellColourFromData;
 import bigbird.factories.KeyValuePairFactory;
 import bigbird.values.MISSING_CELL_XML;
 
-import net.richardlord.ash.core.Game;
-
 public class DecodeFromWordFile implements Decoder
 {
     private static const KEY_AND_VALUE_PASSED:uint = 0;
@@ -20,9 +18,9 @@ public class DecodeFromWordFile implements Decoder
 
     private var _factory:KeyValuePairFactory;
 
-    public function DecodeFromWordFile( game:Game )
+    public function DecodeFromWordFile( factory:KeyValuePairFactory )
     {
-        _factory = new KeyValuePairFactory( game );
+        _factory = factory;
     }
 
     public function decode( value:* ):void

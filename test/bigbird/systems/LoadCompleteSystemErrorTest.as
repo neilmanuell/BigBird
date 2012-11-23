@@ -63,7 +63,16 @@ public class LoadCompleteSystemErrorTest
         const entity:Entity = createEntity( true, false );
         _onLoaded.addOnce( onLoaded );
         update();
-        assertThat( _recieved[0].data.message, equalTo( "AngryDataLoader" ) );
+        assertThat( _recieved[0].data.message, equalTo( '[ErrorEvent type="TEST" bubbles=false cancelable=false eventPhase=2 text="Test ErrorEvent"]' ) );
+    }
+
+    [Test]
+    public function onLoad_dispatched_error_type():void
+    {
+        const entity:Entity = createEntity( true, false );
+        _onLoaded.addOnce( onLoaded );
+        update();
+        assertThat( _recieved[0].data.type, equalTo( 'TEST' ) );
     }
 
     [Test]

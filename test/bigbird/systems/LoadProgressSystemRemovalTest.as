@@ -9,12 +9,13 @@ import net.richardlord.ash.core.Entity;
 import net.richardlord.ash.core.Game;
 
 import org.hamcrest.assertThat;
-import org.hamcrest.object.equalTo;
+import org.hamcrest.object.notNullValue;
+import org.hamcrest.object.nullValue;
 
 import supporting.io.ConfigurableDataLoader;
 import supporting.values.URL_WELL_FORMED_DOCUMENT_XML;
 
-public class LoadProgressSystemTest
+public class LoadProgressSystemRemovalTest
 {
     private var _game:Game;
     private var _progress:BigBirdProgress;
@@ -43,25 +44,46 @@ public class LoadProgressSystemTest
         _classUnderTest = null;
     }
 
+
     [Test]
-    public function totalWork_totalled():void
+    public function does_not_remove_self_before_3_inactive_updates():void
     {
-        createEntity( 1, 10, false );
-        createEntity( 5, 20, false );
-        createEntity( 12, 30, false );
+        createEntity( 1, 10, true );
+        createEntity( 5, 20, true );
+        createEntity( 12, 30, true );
         update();
-        assertThat( _progress.totalWork, equalTo( 60 ) );
+        update();
+
+        assertThat( _game.getSystem( LoadProgressSystem ), notNullValue() );
     }
 
     [Test]
-    public function workDone_totalled():void
+    public function removes_self_after_3_inactive_updates():void
     {
-        createEntity( 1, 10, false );
-        createEntity( 5, 20, false );
-        createEntity( 12, 30, false );
+        createEntity( 1, 10, true );
+        createEntity( 5, 20, true );
+        createEntity( 12, 30, true );
         update();
-        assertThat( _progress.workDone, equalTo( 18 ) );
+        update();
+        update();
+
+        assertThat( _game.getSystem( LoadProgressSystem ), nullValue() );
     }
+
+    [Test]
+    public function does_not_removes_self_if_new_value_added():void
+    {
+        createEntity( 1, 10, true );
+        createEntity( 5, 20, true );
+        createEntity( 12, 30, true );
+        update();
+        update();
+        createEntity( 1, 10, false );
+        update();
+
+        assertThat( _game.getSystem( LoadProgressSystem ), notNullValue() );
+    }
+
 
     private function createEntity( workDone:int, totalWork:int, isComplete:Boolean ):Entity
     {
@@ -77,6 +99,7 @@ public class LoadProgressSystemTest
 
         return entity;
     }
+
 
     private function update():void
     {

@@ -2,26 +2,28 @@ package bigbird.systems
 {
 import bigbird.asserts.assertKeyValuePairs;
 import bigbird.components.WordData;
+import bigbird.factories.KeyValuePairFactory;
+
+import net.richardlord.ash.core.Game;
 
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.isTrue;
 
-import supporting.MockGame;
 import supporting.values.*;
 
 public class DecodeFromWordFileTest
 {
     private var _document:WordData;
-    private var _mockGame:MockGame;
+    private var _game:Game;
     private var _classUnderTest:DecodeFromWordFile;
 
     [Before]
     public function before():void
     {
-        _mockGame = new MockGame();
+        _game = new Game();
 
-        _classUnderTest = new DecodeFromWordFile( _mockGame );
+        _classUnderTest = new DecodeFromWordFile( new KeyValuePairFactory( _game ) );
     }
 
     public function prepareDocument( documentData:XML = null ):void
@@ -36,22 +38,22 @@ public class DecodeFromWordFileTest
         _classUnderTest = null;
     }
 
-    //  [Test]
-    public function mockGameByDefaultReceivedZEROEntities():void
+    [Test]
+    public function game_by_default_received_zero_entities():void
     {
-        assertThat( _mockGame.entitiesReceived.length, equalTo( 0 ) );
+        assertThat( _game.entities.length, equalTo( 0 ) );
     }
 
-    //  [Test]
-    public function testOnlyOneEntityCreated():void
+    [Test]
+    public function only_one_entity_created():void
     {
         prepareDocument();
         _classUnderTest.decode( _document )
-        assertThat( _mockGame.entitiesReceived.length, equalTo( 1 ) );
+        assertThat( _game.entities.length, equalTo( 1 ) );
     }
 
-    //   [Test]
-    public function testValidKeyValueDataDecodedCorrectly():void
+    [Test]
+    public function valid_key_value_data_decoded_correctly():void
     {
         prepareDocument();
         const expected:Array = [
@@ -60,21 +62,21 @@ public class DecodeFromWordFileTest
         ];
 
         _classUnderTest.decode( _document );
-        assertKeyValuePairs( _mockGame.entitiesReceived, expected );
+        assertKeyValuePairs( _game.entities, expected );
     }
 
-    //  [Test]
-    public function testNullNullPassedAborts():void
+    [Test]
+    public function null_key_null_value_no_Entity_added():void
     {
         prepareDocument( DOCUMENT_NO_CELLS_XML )
         const expected:Array = [ ];
 
         _classUnderTest.decode( _document );
-        assertKeyValuePairs( _mockGame.entitiesReceived, expected );
+        assertKeyValuePairs( _game.entities, expected );
     }
 
-    //   [Test]
-    public function testOrphanKeyGetsMissingValueCellAdded():void
+    [Test]
+    public function orphan_key_gets_missing_value_cell_added():void
     {
         prepareDocument( DOCUMENT_ORPHAN_KEY_XML )
         const expected:Array = [
@@ -83,12 +85,12 @@ public class DecodeFromWordFileTest
         ];
 
         _classUnderTest.decode( _document );
-        assertKeyValuePairs( _mockGame.entitiesReceived, expected );
+        assertKeyValuePairs( _game.entities, expected );
     }
 
 
-    //   [Test]
-    public function testOrphanValueGetsMissingValueCellAdded():void
+    [Test]
+    public function orphan_value_gets_missing_value_cell_added():void
     {
         prepareDocument( DOCUMENT_ORPHAN_VALUE_XML );
         const expected:Array = [
@@ -97,11 +99,11 @@ public class DecodeFromWordFileTest
         ];
 
         _classUnderTest.decode( _document );
-        assertKeyValuePairs( _mockGame.entitiesReceived, expected );
+        assertKeyValuePairs( _game.entities, expected );
     }
 
-    //   [Test]
-    public function testValueKeyReversePairMissingKeyAdded():void
+    [Test]
+    public function value_key_reverse_pair_missing_key_added():void
     {
         prepareDocument( DOCUMENT_VALUE_KEY_REVERSE_PAIR_XML );
         const expected:Array = [
@@ -110,19 +112,19 @@ public class DecodeFromWordFileTest
         ];
 
         _classUnderTest.decode( _document );
-        assertKeyValuePairs( _mockGame.entitiesReceived, expected );
+        assertKeyValuePairs( _game.entities, expected );
     }
 
-    //  [Test]
-    public function testValueKeyReversePairSteppedBack():void
+    [Test]
+    public function value_key_reverse_pair_stepped_back():void
     {
         prepareDocument( DOCUMENT_VALUE_KEY_REVERSE_PAIR_XML );
         _classUnderTest.decode( _document );
         assertThat( _document.hasNext, isTrue() );
     }
 
-    // [Test]
-    public function testKeyKeyDuplicationMissingValueAdded():void
+    [Test]
+    public function key_key_duplication_missing_value_added():void
     {
         prepareDocument( DOCUMENT_KEY_KEY_DUPLICATION_XML );
         const expected:Array = [
@@ -131,19 +133,19 @@ public class DecodeFromWordFileTest
         ];
 
         _classUnderTest.decode( _document );
-        assertKeyValuePairs( _mockGame.entitiesReceived, expected );
+        assertKeyValuePairs( _game.entities, expected );
     }
 
-    //[Test]
-    public function testKeyKeyDuplicationSteppedBack():void
+    [Test]
+    public function key_key_duplication_stepped_back():void
     {
         prepareDocument( DOCUMENT_KEY_KEY_DUPLICATION_XML );
         _classUnderTest.decode( _document );
         assertThat( _document.hasNext, isTrue() );
     }
 
-    // [Test]
-    public function testValueValueDuplicationMissingKeyAdded():void
+    [Test]
+    public function value_value_duplication_missing_key_added():void
     {
         prepareDocument( DOCUMENT_VALUE_VALUE_DUPLICATION_XML );
         const expected:Array = [
@@ -152,11 +154,11 @@ public class DecodeFromWordFileTest
         ];
 
         _classUnderTest.decode( _document );
-        assertKeyValuePairs( _mockGame.entitiesReceived, expected );
+        assertKeyValuePairs( _game.entities, expected );
     }
 
-    // [Test]
-    public function testValueValueDuplicationSteppedBack():void
+    [Test]
+    public function value_value_duplication_stepped_back():void
     {
         prepareDocument( DOCUMENT_VALUE_VALUE_DUPLICATION_XML );
         _classUnderTest.decode( _document );

@@ -52,6 +52,7 @@ public class LoadCompleteSystemDispatchTest
     [Test]
     public function onLoad_dispatched_on_complete():void
     {
+        createEntity( true );
         _onLoaded.addOnce( onLoaded );
         update();
         assertThat( _recieved.length, equalTo( 1 ) );
@@ -60,6 +61,7 @@ public class LoadCompleteSystemDispatchTest
     [Test]
     public function onLoad_url_dispatched_on_complete():void
     {
+        createEntity( true );
         _onLoaded.addOnce( onLoaded );
         update();
         assertThat( _recieved[0].url, equalTo( URL_WELL_FORMED_DOCUMENT_XML.url ) );
@@ -68,6 +70,7 @@ public class LoadCompleteSystemDispatchTest
     [Test]
     public function onLoad_data_dispatched_on_complete():void
     {
+        createEntity( true );
         _onLoaded.addOnce( onLoaded );
         update();
         assertThat( _recieved[0].data.toString() ), equalTo( DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML.toString() );
@@ -76,6 +79,7 @@ public class LoadCompleteSystemDispatchTest
     [Test]
     public function onLoad_data_is_copy():void
     {
+        createEntity( true );
         _onLoaded.addOnce( onLoaded );
         update();
         assertThat( _recieved[0].data ), not( DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );

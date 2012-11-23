@@ -8,7 +8,6 @@ import flash.net.URLRequest;
 
 import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
-import org.hamcrest.number.greaterThan;
 import org.hamcrest.object.equalTo;
 
 import supporting.MockBigBird;
@@ -38,8 +37,9 @@ public class LoadingErrorTest
     {
         _classUnderTest.onLoaded.add( onLoaded );
         _classUnderTest.onProgress.add( onProgress );
-        _classUnderTest.load( new URLRequest( "hello" ) );
-        _classUnderTest.load( new URLRequest( "goodbye" ) );
+        _classUnderTest.load( new URLRequest( "hello.xml" ) );
+        _classUnderTest.load( new URLRequest( "goodbye.docx" ) );
+        _classUnderTest.load( new URLRequest( "goodbye.text" ) );
         var asyncHandler:Function = Async.asyncHandler( this, handleComplete, 500, null );
         _classUnderTest.addEventListener( Event.COMPLETE, asyncHandler );
     }
@@ -56,13 +56,20 @@ public class LoadingErrorTest
 
     private function handleComplete( event:Event, data:* ):void
     {
-        assertThat( _recievedData[0].url, equalTo( "hello" ) );
-        assertThat( _recievedData[0].data.message.text(), equalTo( "AngryDataLoader" ) )
 
-        assertThat( _recievedData[1].url, equalTo( "goodbye" ) );
-        assertThat( _recievedData[1].data.toString(), equalTo( "AngryDataLoader" ) );
+        //todo:  order of load depends on OS,
+        assertThat( _recievedData.length, equalTo( 3 ) )
 
-        assertThat( _recievedProgress.length, greaterThan( 0 ) )
+        assertThat( _recievedData[0].url, equalTo( "hello.xml" ) );
+        assertThat( _recievedData[0].data.type.text(), equalTo( "ioError" ) )
+
+        assertThat( _recievedData[1].url, equalTo( "goodbye.docx" ) );
+        assertThat( _recievedData[1].data.type.text(), equalTo( "ioError" ) );
+
+        assertThat( _recievedData[2].url, equalTo( "goodbye.text" ) );
+        assertThat( _recievedData[2].data.type.text(), equalTo( "nullErrorEvent" ) );
+
+        // assertThat( _recievedProgress.length, greaterThan( 0 ) )
     }
 }
 }

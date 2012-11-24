@@ -9,8 +9,8 @@ public class ProgressVO
 
     public function ProgressVO( progress:BigBirdProgress )
     {
-        _totalWork = totalWork;
-        _workDone = workDone
+        _totalWork = progress.totalWork;
+        _workDone = progress.workDone
     }
 
     public function get totalWork():int

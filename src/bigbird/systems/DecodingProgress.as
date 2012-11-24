@@ -29,14 +29,13 @@ public class DecodingProgress extends System
 
     override public function update( time:Number ):void
     {
-        /*_progress.totalDecodingWork = 0;
-         _progress.decodingWorkDone = 0;
 
-         for ( var node:DecodeNode = _decodingNodes.head; node; node = node.next )
-         {
-         _progress.totalDecodingWork += node.progress.totalWork;
-         _progress.decodingWorkDone += node.progress.workDone;
-         }*/
+
+        for ( var node:DecodeNode = _decodingNodes.head; node; node = node.next )
+        {
+            _progress.totalWork += node.document.length;
+            _progress.workDone += node.document.position;
+        }
 
     }
 }

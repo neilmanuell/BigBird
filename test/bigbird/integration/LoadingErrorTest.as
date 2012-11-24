@@ -1,5 +1,6 @@
 package bigbird.integration
 {
+import bigbird.asserts.assertReceivedDataLoaderVOsContain;
 import bigbird.core.vos.DataLoaderVO;
 import bigbird.core.vos.ProgressVO;
 
@@ -39,7 +40,7 @@ public class LoadingErrorTest
         _classUnderTest.onProgress.add( onProgress );
         _classUnderTest.load( new URLRequest( "hello.xml" ) );
         _classUnderTest.load( new URLRequest( "goodbye.docx" ) );
-        _classUnderTest.load( new URLRequest( "goodbye.text" ) );
+        _classUnderTest.load( new URLRequest( "later.text" ) );
         var asyncHandler:Function = Async.asyncHandler( this, handleComplete, 500, null );
         _classUnderTest.addEventListener( Event.COMPLETE, asyncHandler );
     }
@@ -57,19 +58,17 @@ public class LoadingErrorTest
     private function handleComplete( event:Event, data:* ):void
     {
 
-        //todo:  order of load depends on OS,
+        //todo:  add comments to test, and make strings const
         assertThat( _recievedData.length, equalTo( 3 ) )
 
-        assertThat( _recievedData[0].url, equalTo( "hello.xml" ) );
-        assertThat( _recievedData[0].data.type.text(), equalTo( "ioError" ) )
+        assertReceivedDataLoaderVOsContain( "hello.xml", "ioError", _recievedData, true );
+        assertReceivedDataLoaderVOsContain( "goodbye.docx", "ioError", _recievedData, true );
+        assertReceivedDataLoaderVOsContain( "later.text", "nullErrorEvent", _recievedData, true );
 
-        assertThat( _recievedData[1].url, equalTo( "goodbye.docx" ) );
-        assertThat( _recievedData[1].data.type.text(), equalTo( "ioError" ) );
 
-        assertThat( _recievedData[2].url, equalTo( "goodbye.text" ) );
-        assertThat( _recievedData[2].data.type.text(), equalTo( "nullErrorEvent" ) );
+        assertThat( _recievedProgress.length, equalTo( 0 ) )
 
-        // assertThat( _recievedProgress.length, greaterThan( 0 ) )
+
     }
 }
 }

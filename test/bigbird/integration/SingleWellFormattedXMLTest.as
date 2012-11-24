@@ -1,5 +1,6 @@
 package bigbird.integration
 {
+import bigbird.asserts.assertReceivedDataLoaderVOsContain;
 import bigbird.core.vos.DataLoaderVO;
 import bigbird.core.vos.ProgressVO;
 
@@ -18,7 +19,7 @@ public class SingleWellFormattedXMLTest
 {
     private var _classUnderTest:MockBigBird;
     private const _recievedData:Vector.<DataLoaderVO> = new Vector.<DataLoaderVO>();
-    private const _recievedProgress:Array = [];
+    private const _recievedProgress:Vector.<ProgressVO> = new Vector.<ProgressVO>();
 
 
     [Before]
@@ -52,19 +53,19 @@ public class SingleWellFormattedXMLTest
 
     private function onProgress( progress:ProgressVO ):void
     {
-        _recievedProgress.push( {workDone:progress.workDone, totalWork:progress.totalWork } );
+        _recievedProgress.push( progress );
     }
 
     private function handleComplete( event:Event, data:* ):void
     {
-        //todo:  order of load depends on OS,
-        assertThat( _recievedData[0].url, equalTo( URL_WELL_FORMED_DOCUMENT_XML.url ) );
-        assertThat( _recievedData[0].data.toString(), equalTo( DATA_WELL_FORMED_DOCUMENT.toString() ) )
+        //todo:  add comments to test,
+        assertReceivedDataLoaderVOsContain( URL_WELL_FORMED_DOCUMENT_XML.url, DATA_WELL_FORMED_DOCUMENT.toString(), _recievedData );
+        assertReceivedDataLoaderVOsContain( URL_WELL_FORMED_DOCUMENT_DOCX.url, DATA_WELL_FORMED_DOCUMENT.toString(), _recievedData );
 
-        assertThat( _recievedData[1].url, equalTo( URL_WELL_FORMED_DOCUMENT_DOCX.url ) );
-        assertThat( _recievedData[1].data.toString(), equalTo( DATA_WELL_FORMED_DOCUMENT.toString() ) );
+        const lastProgressVO:ProgressVO = _recievedProgress[length - 1];
 
-        // assertThat( _recievedProgress.length, greaterThan( 0 ) )
+        assertThat( lastProgressVO.workDone / lastProgressVO.totalWork, equalTo( 1 ) );
     }
+
 }
 }

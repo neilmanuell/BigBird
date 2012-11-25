@@ -1,5 +1,6 @@
 package bigbird.components.io
 {
+import flash.events.ErrorEvent;
 import flash.events.Event;
 import flash.events.IOErrorEvent;
 import flash.events.SecurityErrorEvent;
@@ -8,8 +9,11 @@ import flash.net.URLRequest;
 
 public class XMLLoader implements DataLoader
 {
+    private var _url:String;
+
     public function XMLLoader( request:URLRequest )
     {
+        _url = request.url;
         _loader = new URLLoader( request );
         _loader.addEventListener( Event.COMPLETE, onComplete );
         _loader.addEventListener( IOErrorEvent.IO_ERROR, onError );
@@ -20,14 +24,14 @@ public class XMLLoader implements DataLoader
 
     public function get success():Boolean
     {
-        return (_errorMsg == null);
+        return (_error == null);
     }
 
-    private var _errorMsg:String;
+    private var _error:ErrorEvent;
 
-    public function get errorMsg():String
+    public function get error():ErrorEvent
     {
-        return _errorMsg;
+        return _error;
     }
 
     private var _isLoadComplete:Boolean;
@@ -52,26 +56,38 @@ public class XMLLoader implements DataLoader
         return new XML( _loader.data );
     }
 
-    private function destroyLoader():void
+    public function get url():String
+    {
+        return _url;
+    }
+
+
+    private function removeListeners():void
     {
         _loader.removeEventListener( Event.COMPLETE, onComplete );
         _loader.removeEventListener( IOErrorEvent.IO_ERROR, onError );
         _loader.removeEventListener( SecurityErrorEvent.SECURITY_ERROR, onError );
-        _loader = null;
     }
 
-    private function onError( event:Event ):void
+    private function onError( event:ErrorEvent ):void
     {
-        _errorMsg = event.toString();
+        _error = event;
         _isLoadComplete = true;
-        destroyLoader();
+        removeListeners();
     }
 
     private function onComplete( event:Event ):void
     {
         _isLoadComplete = true;
-        destroyLoader();
+        removeListeners();
     }
+
+    public function destroy():void
+    {
+        removeListeners();
+        _loader = null;
+    }
+
 
 }
 }

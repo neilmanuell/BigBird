@@ -1,27 +1,22 @@
 package bigbird.factories
 {
 import bigbird.asserts.assertExpectedComponents;
+import bigbird.components.Chunker;
 import bigbird.components.EntityStateNames;
 import bigbird.components.WordData;
 import bigbird.components.io.Loader;
 
-import flash.events.Event;
 import flash.net.URLRequest;
-
-import mockolate.nice;
-import mockolate.prepare;
-import mockolate.received;
 
 import net.richardlord.ash.core.Entity;
 import net.richardlord.ash.core.Game;
 import net.richardlord.ash.fsm.EntityStateMachine;
 
-import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
+import org.hamcrest.object.equalTo;
 import org.hamcrest.object.instanceOf;
-import org.hamcrest.object.strictlyEqualTo;
 
-import supporting.values.DOCUMENT_URL;
+import supporting.values.URL_WELL_FORMED_DOCUMENT_XML;
 
 public class WordEntityFSMTest
 {
@@ -30,18 +25,11 @@ public class WordEntityFSMTest
     private var _classUnderTest:Entity;
     private var _fsm:EntityStateMachine;
 
-    [Before(order=1, async, timeout=5000)]
-    public function prepareMockolates():void
-    {
-        Async.proceedOnEvent( this,
-                prepare( Game ),
-                Event.COMPLETE );
-    }
 
     public function createEntity( request:URLRequest = null ):void
     {
-        const currentRequest:URLRequest = request || DOCUMENT_URL
-        _game = nice( Game );
+        const currentRequest:URLRequest = request || URL_WELL_FORMED_DOCUMENT_XML
+        _game = new Game();
         _classUnderTest = new WordEntityFactory( _game ).createWordFileEntity( currentRequest );
         _fsm = _classUnderTest.get( EntityStateMachine );
     }
@@ -65,7 +53,7 @@ public class WordEntityFSMTest
     public function createWordFileEntity_adds_Entity_to_Game():void
     {
         createEntity();
-        assertThat( _game, received().method( "addEntity" ).arg( strictlyEqualTo( _classUnderTest ) ).once() )
+        assertThat( _game.entities.length, equalTo( 1 ) )
     }
 
     [Test]
@@ -96,7 +84,7 @@ public class WordEntityFSMTest
     public function decoding_state():void
     {
         createEntity();
-        const expectedComponents:Array = defaultComponents.concat( [  WordData] );
+        const expectedComponents:Array = defaultComponents.concat( [  WordData, Chunker] );
         changeState( EntityStateNames.DECODING );
         assertExpectedComponents( expectedComponents, _classUnderTest );
     }

@@ -1,5 +1,6 @@
 package bigbird.components.io
 {
+import flash.events.ErrorEvent;
 import flash.net.URLRequest;
 
 public class NullLoader implements DataLoader
@@ -39,6 +40,15 @@ public class NullLoader implements DataLoader
     public function get data():XML
     {
         return new XML();
+    }
+
+    public function destroy():void
+    {
+    }
+
+    public function get error():ErrorEvent
+    {
+        return new ErrorEvent( "nullErrorEvent", false, false, "Big Bird only recognises .xml or .docx formats" );
     }
 }
 }

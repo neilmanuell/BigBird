@@ -2,7 +2,7 @@ package bigbird.systems.utils
 {
 import net.richardlord.signals.Signal0;
 
-public class SystemRemoval
+public class SystemRemoval implements SelfRemovingSystem
 {
 
     public function SystemRemoval( onRemove:Function, updateComplete:Signal0, inactiveCount:int = 3 ):void
@@ -12,6 +12,7 @@ public class SystemRemoval
         _updateComplete = updateComplete;
     }
 
+    private var _flaggedForRemove:Boolean = false;
     private var _onRemove:Function;
     private var _updateComplete:Signal0;
 
@@ -21,6 +22,12 @@ public class SystemRemoval
     {
         return _inactiveCount;
     }
+
+    public function get flaggedForRemove():Boolean
+    {
+        return _flaggedForRemove;
+    }
+
 
     private var _count:int = 0;
 
@@ -36,9 +43,11 @@ public class SystemRemoval
         return _isActive;
     }
 
-    public function resetActivity():void
+    public function cancelRemoval():void
     {
-        _isActive = false;
+        _flaggedForRemove = false;
+        _count = 0;
+        _updateComplete.remove( onUpdateComplete );
     }
 
     public function confirmActivity():void
@@ -50,10 +59,12 @@ public class SystemRemoval
     public function applyActivity():void
     {
 
-        if ( !_isActive && ++_count == 3 && _onRemove != null )
+        if ( !_isActive && ++_count == 3 && _onRemove != null && _updateComplete != null )
         {
+            _flaggedForRemove = true;
             _updateComplete.addOnce( onUpdateComplete );
         }
+        _isActive = false;
     }
 
     private function onUpdateComplete():void

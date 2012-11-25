@@ -1,5 +1,7 @@
 package bigbird.components.io
 {
+import flash.events.ErrorEvent;
+
 public interface DataLoader
 
 {
@@ -13,6 +15,12 @@ public interface DataLoader
     function get success():Boolean
 
     function get data():XML
+
+    function get url():String
+
+    function get error():ErrorEvent
+
+    function destroy():void
 
 
 }

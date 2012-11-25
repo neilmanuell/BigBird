@@ -9,7 +9,7 @@ public class ProgressSignal extends Signal1
 {
     public function ProgressSignal()
     {
-        super( Number );
+        super( ProgressVO );
     }
 
     public function dispatchProgress( progress:BigBirdProgress ):void

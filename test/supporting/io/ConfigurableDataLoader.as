@@ -2,6 +2,10 @@ package supporting.io
 {
 import bigbird.components.io.DataLoader;
 
+import flash.events.ErrorEvent;
+
+import supporting.values.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
+
 public class ConfigurableDataLoader implements DataLoader
 {
 
@@ -27,7 +31,12 @@ public class ConfigurableDataLoader implements DataLoader
 
     public function get data():XML
     {
-        return null;
+        return DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
+    }
+
+    public function get url():String
+    {
+        return "";
     }
 
     private var _bytesTotal:uint;
@@ -42,6 +51,16 @@ public class ConfigurableDataLoader implements DataLoader
     public function get bytesLoaded():uint
     {
         return _bytesLoaded;
+    }
+
+
+    public function destroy():void
+    {
+    }
+
+    public function get error():ErrorEvent
+    {
+        return new ErrorEvent( "Null Error Event" );
     }
 }
 }

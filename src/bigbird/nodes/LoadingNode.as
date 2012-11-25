@@ -11,5 +11,6 @@ public class LoadingNode extends Node
     public var loader:Loader;
     public var wordData:WordData;
     public var fsm:EntityStateMachine;
+
 }
 }

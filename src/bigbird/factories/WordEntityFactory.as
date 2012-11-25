@@ -1,9 +1,11 @@
 package bigbird.factories
 {
 
+import bigbird.components.Chunker;
 import bigbird.components.EntityStateNames;
 import bigbird.components.WordData;
 import bigbird.components.io.Loader;
+import bigbird.systems.utils.AddAllLoadingSystems;
 
 import flash.net.URLRequest;
 
@@ -13,6 +15,9 @@ import net.richardlord.ash.fsm.EntityStateMachine;
 
 public class WordEntityFactory
 {
+    [Inject]
+    public var systemAdd:AddAllLoadingSystems;
+
     public function WordEntityFactory( game:Game )
     {
         _game = game;
@@ -30,7 +35,8 @@ public class WordEntityFactory
                 .add( Loader ).withInstance( new Loader( request, loaderFactory ) );
 
         fsm.createState( EntityStateNames.DECODING )
-                .add( WordData );
+                .add( WordData )
+                .add( Chunker );
 
         fsm.createState( EntityStateNames.COMPLETE )
                 .add( URLRequest ).withInstance( request )
@@ -41,6 +47,8 @@ public class WordEntityFactory
         _game.addEntity( entity );
 
         fsm.changeState( EntityStateNames.LOADING );
+
+        if ( systemAdd != null )systemAdd.add();
 
         return entity;
     }

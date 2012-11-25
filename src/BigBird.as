@@ -2,6 +2,8 @@ package
 {
 
 import bigbird.components.BigBirdProgress;
+import bigbird.components.EntityStateNames;
+import bigbird.components.utils.BigBirdFSMController;
 import bigbird.core.KeyValuePairSignal;
 import bigbird.core.ProgressSignal;
 import bigbird.core.StopSignal;
@@ -11,7 +13,7 @@ import bigbird.systems.IdleSystem;
 import bigbird.systems.LoadCompleteSystem;
 import bigbird.systems.LoadProgressSystem;
 import bigbird.systems.SystemPriority;
-import bigbird.systems.utils.AddAllLoadingSystems;
+import bigbird.systems.utils.AddLoadingSystems;
 
 import flash.display.Sprite;
 import flash.net.URLRequest;
@@ -47,12 +49,13 @@ public class BigBird extends Sprite
 
         _injector.map( Game ).toValue( _game );
         _injector.map( Injector ).toValue( _injector );
-        _injector.map( AddAllLoadingSystems );
+        _injector.map( AddLoadingSystems );
         _injector.map( WordEntityFactory ).asSingleton();
         _injector.map( ProgressSignal ).toValue( onProgress );
         _injector.map( WordDataSignal ).toValue( onLoaded );
         _injector.map( StopSignal ).toValue( onStop );
         _injector.map( BigBirdProgress ).asSingleton();
+        _injector.map( BigBirdFSMController ).asSingleton();
         _injector.map( LoadProgressSystem );
         _injector.map( LoadCompleteSystem );
         _injector.map( IdleSystem );
@@ -85,7 +88,8 @@ public class BigBird extends Sprite
     public function load( request:URLRequest ):void
     {
         const factory:WordEntityFactory = _injector.getInstance( WordEntityFactory );
-        factory.createWordFileEntity( request );
+        const fsmController:BigBirdFSMController = _injector.getInstance( BigBirdFSMController );
+        fsmController.changeState( EntityStateNames.LOADING, factory.createWordFileEntity( request ) )
         start();
     }
 

@@ -64,14 +64,6 @@ public class WordEntityFSMTest
     }
 
     [Test]
-    public function loading_state_is_default():void
-    {
-        createEntity();
-        const expectedComponents:Array = defaultComponents.concat( [ WordData, Loader] );
-        assertExpectedComponents( expectedComponents, _classUnderTest );
-    }
-
-    [Test]
     public function loading_state():void
     {
         createEntity();

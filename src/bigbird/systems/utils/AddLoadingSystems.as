@@ -5,7 +5,7 @@ import bigbird.systems.LoadCompleteSystem;
 import bigbird.systems.LoadProgressSystem;
 import bigbird.systems.SystemPriority;
 
-public class AddAllLoadingSystems extends SystemAddition
+public class AddLoadingSystems extends SystemAddition
 {
     override public function add():void
     {

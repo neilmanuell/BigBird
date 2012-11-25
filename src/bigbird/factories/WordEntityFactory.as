@@ -5,7 +5,7 @@ import bigbird.components.Chunker;
 import bigbird.components.EntityStateNames;
 import bigbird.components.WordData;
 import bigbird.components.io.Loader;
-import bigbird.systems.utils.AddAllLoadingSystems;
+import bigbird.systems.utils.AddLoadingSystems;
 
 import flash.net.URLRequest;
 
@@ -16,7 +16,7 @@ import net.richardlord.ash.fsm.EntityStateMachine;
 public class WordEntityFactory
 {
     [Inject]
-    public var systemAdd:AddAllLoadingSystems;
+    public var systemAdd:AddLoadingSystems;
 
     public function WordEntityFactory( game:Game )
     {
@@ -28,6 +28,13 @@ public class WordEntityFactory
     public function createWordFileEntity( request:URLRequest, loaderFactory:Function = null ):Entity
     {
         const entity:Entity = new Entity();
+        var fsm:EntityStateMachine = createFSM( entity, request, loaderFactory );
+        _game.addEntity( entity );
+        return entity;
+    }
+
+    private function createFSM( entity:Entity, request:URLRequest, loaderFactory:Function ):EntityStateMachine
+    {
         const fsm:EntityStateMachine = new EntityStateMachine( entity );
 
         fsm.createState( EntityStateNames.LOADING )
@@ -43,14 +50,7 @@ public class WordEntityFactory
                 .add( WordData );
 
         entity.add( fsm );
-
-        _game.addEntity( entity );
-
-        fsm.changeState( EntityStateNames.LOADING );
-
-        if ( systemAdd != null )systemAdd.add();
-
-        return entity;
+        return fsm;
     }
 
 

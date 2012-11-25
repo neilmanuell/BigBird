@@ -1,5 +1,6 @@
 package bigbird.systems
 {
+import bigbird.components.EntityStateNames;
 import bigbird.components.io.DataLoader;
 import bigbird.core.WordDataSignal;
 import bigbird.core.vos.DataLoaderVO;
@@ -17,6 +18,7 @@ import org.hamcrest.object.equalTo;
 import supporting.io.AngryDataLoader;
 import supporting.io.GrumpyDataLoader;
 import supporting.io.HappyDataLoader;
+import supporting.utils.changeState;
 import supporting.values.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
 import supporting.values.URL_WELL_FORMED_DOCUMENT_XML;
 
@@ -103,7 +105,9 @@ public class LoadCompleteSystemDispatchTest
                 return new GrumpyDataLoader( request );
         };
 
-        return _factory.createWordFileEntity( URL_WELL_FORMED_DOCUMENT_XML, dataLoaderFactory );
+        const entity:Entity = _factory.createWordFileEntity( URL_WELL_FORMED_DOCUMENT_XML, dataLoaderFactory );
+        changeState( EntityStateNames.LOADING, entity );
+        return entity;
     }
 
     private function onLoaded( wordData:DataLoaderVO ):void

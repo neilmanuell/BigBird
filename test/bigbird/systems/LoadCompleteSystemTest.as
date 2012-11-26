@@ -2,10 +2,10 @@ package bigbird.systems
 {
 import bigbird.asserts.assertExpectedComponents;
 import bigbird.components.Chunker;
-import bigbird.components.EntityStateNames;
 import bigbird.components.WordData;
 import bigbird.components.io.DataLoader;
 import bigbird.components.io.Loader;
+import bigbird.controller.EntityStateNames;
 import bigbird.core.WordDataSignal;
 import bigbird.core.vos.DataLoaderVO;
 import bigbird.factories.WordEntityFactory;

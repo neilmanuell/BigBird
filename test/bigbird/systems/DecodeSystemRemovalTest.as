@@ -1,6 +1,6 @@
 package bigbird.systems
 {
-import bigbird.components.EntityStateNames;
+import bigbird.controller.EntityStateNames;
 import bigbird.factories.WordEntityFactory;
 
 import net.richardlord.ash.core.Entity;

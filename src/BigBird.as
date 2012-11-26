@@ -2,8 +2,10 @@ package
 {
 
 import bigbird.components.BigBirdProgress;
-import bigbird.components.EntityStateNames;
-import bigbird.components.utils.BigBirdFSMController;
+import bigbird.controller.BigBirdFSMController;
+import bigbird.controller.StartBigBird;
+import bigbird.controller.StartWordFileLoad;
+import bigbird.controller.StopBigBird;
 import bigbird.core.KeyValuePairSignal;
 import bigbird.core.ProgressSignal;
 import bigbird.core.StopSignal;
@@ -19,8 +21,8 @@ import flash.display.Sprite;
 import flash.net.URLRequest;
 
 import net.richardlord.ash.core.Game;
-import net.richardlord.ash.integration.swiftsuspenders.SwiftSuspendersGame;
 import net.richardlord.ash.tick.FrameTickProvider;
+import net.richardlord.ash.tick.TickProvider;
 
 import org.swiftsuspenders.Injector;
 
@@ -31,10 +33,7 @@ public class BigBird extends Sprite
     public const onProgress:ProgressSignal = new ProgressSignal();
     public const onStop:StopSignal = new StopSignal();
 
-    private var _game:Game;
-    private var _tickProvider:FrameTickProvider;
     private var _injector:Injector;
-    private var _active:Boolean;
 
     public function BigBird()
     {
@@ -43,11 +42,12 @@ public class BigBird extends Sprite
 
     private function prepare():void
     {
-        _injector = new Injector();
-        _game = new SwiftSuspendersGame( _injector );
-        _tickProvider = new FrameTickProvider( this );
+        const game:Game = new Game();
 
-        _injector.map( Game ).toValue( _game );
+        _injector = new Injector();
+
+        _injector.map( Game ).toValue( game );
+        _injector.map( TickProvider ).toValue( new FrameTickProvider( this ) );
         _injector.map( Injector ).toValue( _injector );
         _injector.map( AddLoadingSystems );
         _injector.map( WordEntityFactory ).asSingleton();
@@ -60,36 +60,24 @@ public class BigBird extends Sprite
         _injector.map( LoadCompleteSystem );
         _injector.map( IdleSystem );
 
-
-        _game.addSystem( _injector.getInstance( IdleSystem ), SystemPriority.IDLE_CHECK );
-
-
+        game.addSystem( _injector.getInstance( IdleSystem ), SystemPriority.IDLE_CHECK );
         onStop.add( stop );
     }
 
 
     public function start():void
     {
-        if ( _active )return;
-        _active = true;
-        _tickProvider.add( _game.update );
-        _tickProvider.start();
+        _injector.getInstance( StartBigBird ).start();
     }
 
     public function stop():void
     {
-        if ( !_active )return;
-        _active = false;
-        _tickProvider.stop();
-        _tickProvider.remove( _game.update );
+        _injector.getInstance( StopBigBird ).stop();
     }
-
 
     public function load( request:URLRequest ):void
     {
-        const factory:WordEntityFactory = _injector.getInstance( WordEntityFactory );
-        const fsmController:BigBirdFSMController = _injector.getInstance( BigBirdFSMController );
-        fsmController.changeState( EntityStateNames.LOADING, factory.createWordFileEntity( request ) )
+        _injector.getInstance( StartWordFileLoad ).load( request );
         start();
     }
 

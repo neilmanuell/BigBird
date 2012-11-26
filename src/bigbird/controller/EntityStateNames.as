@@ -1,4 +1,4 @@
-package bigbird.components
+package bigbird.controller
 {
 public class EntityStateNames
 {

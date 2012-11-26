@@ -1,4 +1,4 @@
-package bigbird.components.utils
+package bigbird.controller
 {
 import flash.utils.Dictionary;
 

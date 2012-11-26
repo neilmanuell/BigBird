@@ -2,9 +2,9 @@ package bigbird.factories
 {
 import bigbird.asserts.assertExpectedComponents;
 import bigbird.components.Chunker;
-import bigbird.components.EntityStateNames;
 import bigbird.components.WordData;
 import bigbird.components.io.Loader;
+import bigbird.controller.EntityStateNames;
 
 import flash.net.URLRequest;
 

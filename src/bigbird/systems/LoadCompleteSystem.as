@@ -1,6 +1,6 @@
 package bigbird.systems
 {
-import bigbird.components.EntityStateNames;
+import bigbird.controller.EntityStateNames;
 import bigbird.core.WordDataSignal;
 import bigbird.nodes.LoadingNode;
 import bigbird.systems.utils.SelfRemovingSystem;

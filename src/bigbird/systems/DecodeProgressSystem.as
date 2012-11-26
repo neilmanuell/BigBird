@@ -1,24 +1,23 @@
 package bigbird.systems
 {
+import bigbird.components.BigBirdProgress;
 import bigbird.nodes.DecodeNode;
 import bigbird.systems.utils.SelfRemovingSystem;
 import bigbird.systems.utils.SystemRemoval;
-
-import flash.utils.getTimer;
 
 import net.richardlord.ash.core.Game;
 import net.richardlord.ash.core.NodeList;
 import net.richardlord.ash.core.System;
 
-public class DecodeSystem extends System implements SelfRemovingSystem
+public class DecodeProgressSystem extends System implements SelfRemovingSystem
 {
-    private var _decoder:Decoder;
-    private var _decodeNodes:NodeList;
+    private var _progress:BigBirdProgress;
+    private var _decodingNodes:NodeList;
     private var _systemRemoval:SystemRemoval;
 
-    public function DecodeSystem( decoder:Decoder )
+    public function DecodeProgressSystem( progress:BigBirdProgress )
     {
-        _decoder = decoder;
+        _progress = progress;
     }
 
     public function get flaggedForRemove():Boolean
@@ -33,6 +32,12 @@ public class DecodeSystem extends System implements SelfRemovingSystem
 
     override public function addToGame( game:Game ):void
     {
+        createRemoval( game );
+        _decodingNodes = game.getNodeList( DecodeNode );
+    }
+
+    private function createRemoval( game:Game ):void
+    {
         const that:System = this;
         const onRemove:Function = function ():void
         {
@@ -40,43 +45,28 @@ public class DecodeSystem extends System implements SelfRemovingSystem
         };
 
         _systemRemoval = new SystemRemoval( onRemove, game.updateComplete );
-        _decodeNodes = game.getNodeList( DecodeNode );
     }
 
     override public function removeFromGame( game:Game ):void
     {
-        super.removeFromGame( game );
+        _decodingNodes = null;
+        _systemRemoval = null;
     }
 
     override public function update( time:Number ):void
     {
-        if ( !_decodeNodes.empty )
+
+        if ( !_decodingNodes.empty )
         {
-            _systemRemoval.confirmActivity();
-
-            for ( var node:DecodeNode = _decodeNodes.head; node; node = node.next )
+            for ( var node:DecodeNode = _decodingNodes.head; node; node = node.next )
             {
-                updateNode( node, time );
-
+                _progress.totalWork += node.document.length;
+                _progress.workDone += node.document.position;
             }
+            _systemRemoval.confirmActivity();
         }
 
         _systemRemoval.applyActivity();
-    }
-
-    internal function updateNode( node:DecodeNode, time:Number ):void
-    {
-        const timeBefore:Number = getTimer();
-        var count:int = 0;
-
-        while ( node.document.hasNext && count < node.chunker.chunkingSize )
-        {
-            _decoder.decode( node.document );
-            count++;
-        }
-
-        node.chunker.previousChunkingTime = getTimer() - timeBefore;
-
     }
 }
 }

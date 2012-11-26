@@ -1,10 +1,10 @@
 package bigbird.factories
 {
 import bigbird.asserts.assertExpectedComponents;
-import bigbird.components.EntityStateNames;
 import bigbird.components.KeyCell;
 import bigbird.components.KeyValuePairIndex;
 import bigbird.components.ValueCell;
+import bigbird.controller.EntityStateNames;
 
 import flash.net.URLRequest;
 

@@ -1,5 +1,7 @@
 package bigbird.components.utils
 {
+import bigbird.controller.EntityFSMController;
+
 import net.richardlord.ash.core.Entity;
 import net.richardlord.ash.fsm.EntityStateMachine;
 

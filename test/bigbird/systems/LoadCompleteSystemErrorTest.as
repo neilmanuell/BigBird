@@ -1,7 +1,7 @@
 package bigbird.systems
 {
-import bigbird.components.EntityStateNames;
 import bigbird.components.io.DataLoader;
+import bigbird.controller.EntityStateNames;
 import bigbird.core.WordDataSignal;
 import bigbird.core.vos.DataLoaderVO;
 import bigbird.factories.WordEntityFactory;

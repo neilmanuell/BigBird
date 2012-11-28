@@ -1,6 +1,6 @@
 package supporting.systems
 {
-import bigbird.systems.utils.SelfRemovingSystem;
+import bigbird.systems.utils.removal.SelfRemovingSystem;
 
 import net.richardlord.ash.core.System;
 

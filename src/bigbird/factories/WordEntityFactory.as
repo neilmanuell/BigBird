@@ -5,7 +5,7 @@ import bigbird.components.Chunker;
 import bigbird.components.WordData;
 import bigbird.components.io.Loader;
 import bigbird.controller.EntityStateNames;
-import bigbird.systems.utils.AddLoadingSystems;
+import bigbird.systems.utils.removal.AddLoadingSystems;
 
 import flash.net.URLRequest;
 
@@ -42,12 +42,9 @@ public class WordEntityFactory
                 .add( Loader ).withInstance( new Loader( request, loaderFactory ) );
 
         fsm.createState( EntityStateNames.DECODING )
+                .add( URLRequest ).withInstance( request )
                 .add( WordData )
                 .add( Chunker );
-
-        fsm.createState( EntityStateNames.COMPLETE )
-                .add( URLRequest ).withInstance( request )
-                .add( WordData );
 
         entity.add( fsm );
         return fsm;

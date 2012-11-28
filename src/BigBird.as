@@ -12,10 +12,10 @@ import bigbird.core.StopSignal;
 import bigbird.core.WordDataSignal;
 import bigbird.factories.WordEntityFactory;
 import bigbird.systems.IdleSystem;
-import bigbird.systems.LoadCompleteSystem;
-import bigbird.systems.LoadProgressSystem;
 import bigbird.systems.SystemPriority;
-import bigbird.systems.utils.AddLoadingSystems;
+import bigbird.systems.load.LoadCompleteSystem;
+import bigbird.systems.load.LoadProgressSystem;
+import bigbird.systems.utils.removal.AddLoadingSystems;
 
 import flash.display.Sprite;
 import flash.net.URLRequest;
@@ -53,6 +53,7 @@ public class BigBird extends Sprite
         _injector.map( WordEntityFactory ).asSingleton();
         _injector.map( ProgressSignal ).toValue( onProgress );
         _injector.map( WordDataSignal ).toValue( onLoaded );
+        _injector.map( KeyValuePairSignal ).toValue( onDecoded );
         _injector.map( StopSignal ).toValue( onStop );
         _injector.map( BigBirdProgress ).asSingleton();
         _injector.map( BigBirdFSMController ).asSingleton();

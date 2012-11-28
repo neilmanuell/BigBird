@@ -4,18 +4,20 @@ import bigbird.components.KeyCell;
 import bigbird.components.ValueCell;
 import bigbird.core.vos.KeyValuePairVO;
 
-import net.richardlord.signals.Signal2;
+import flash.net.URLRequest;
 
-public class KeyValuePairSignal extends Signal2
+import net.richardlord.signals.Signal3;
+
+public class KeyValuePairSignal extends Signal3
 {
     public function KeyValuePairSignal()
     {
-        super( String, KeyValuePairVO );
+        super( URLRequest, int, KeyValuePairVO );
     }
 
-    public function dispatchKeyValuePair( documentName:String, key:KeyCell, value:ValueCell ):void
+    public function dispatchKeyValuePair( request:URLRequest, index:int, key:KeyCell, value:ValueCell ):void
     {
-        dispatch( documentName, new KeyValuePairVO( key, value ) );
+        dispatch( request, index, new KeyValuePairVO( key, value ) );
     }
 }
 }

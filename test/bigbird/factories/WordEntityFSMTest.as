@@ -76,19 +76,11 @@ public class WordEntityFSMTest
     public function decoding_state():void
     {
         createEntity();
-        const expectedComponents:Array = defaultComponents.concat( [  WordData, Chunker] );
+        const expectedComponents:Array = defaultComponents.concat( [  WordData, Chunker, URLRequest] );
         changeState( EntityStateNames.DECODING );
         assertExpectedComponents( expectedComponents, _classUnderTest );
     }
 
-    [Test]
-    public function completed_state():void
-    {
-        createEntity();
-        const expectedComponents:Array = defaultComponents.concat( [URLRequest, WordData] );
-        changeState( EntityStateNames.COMPLETE );
-        assertExpectedComponents( expectedComponents, _classUnderTest );
-    }
 
     private function changeState( name:String ):void
     {

@@ -1,8 +1,7 @@
 package bigbird.core
 {
-import bigbird.components.KeyCell;
-import bigbird.components.ValueCell;
 import bigbird.core.vos.KeyValuePairVO;
+import bigbird.nodes.KeyValuePairNode;
 
 import flash.net.URLRequest;
 
@@ -15,9 +14,9 @@ public class KeyValuePairSignal extends Signal3
         super( URLRequest, int, KeyValuePairVO );
     }
 
-    public function dispatchKeyValuePair( request:URLRequest, index:int, key:KeyCell, value:ValueCell ):void
+    public function dispatchKeyValuePair( node:KeyValuePairNode ):void
     {
-        dispatch( request, index, new KeyValuePairVO( key, value ) );
+        dispatch( node.info.request, node.info.index, new KeyValuePairVO( node.key, node.value ) );
     }
 }
 }

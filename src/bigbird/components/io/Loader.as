@@ -7,9 +7,7 @@ import flash.events.ErrorEvent;
 import flash.net.URLRequest;
 
 public class Loader implements DataLoader
-
 {
-
     private var _client:DataLoader;
 
     public function Loader( request:URLRequest, factory:Function = null ):void

@@ -2,16 +2,19 @@ package bigbird.factories
 {
 import bigbird.asserts.assertExpectedComponents;
 import bigbird.components.KeyCell;
-import bigbird.components.KeyValuePairIndex;
+import bigbird.components.KeyValuePairInfo;
 import bigbird.components.ValueCell;
-import bigbird.controller.EntityStateNames;
 
-import flash.net.URLRequest;
+import flash.events.Event;
+
+import mockolate.nice;
+import mockolate.prepare;
+import mockolate.received;
 
 import net.richardlord.ash.core.Entity;
 import net.richardlord.ash.core.Game;
-import net.richardlord.ash.fsm.EntityStateMachine;
 
+import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.instanceOf;
@@ -24,23 +27,24 @@ import supporting.values.VALUE_CELL_XML;
 
 public class KeyValuePairFSMTest
 {
-    private const defaultComponents:Array = [EntityStateMachine];
+    private const defaultComponents:Array = [];
 
-    private var game:Game;
+    private var _game:Game;
     private var classUnderTest:KeyValuePairFactory;
 
-    [Before]
-    public function before():void
+    [Before(order=1, async, timeout=5000)]
+    public function prepareMockolates():void
     {
-        game = new Game();
-        classUnderTest = new KeyValuePairFactory( game );
+        Async.proceedOnEvent( this,
+                prepare( Game ),
+                Event.COMPLETE );
     }
 
-    [After]
-    public function after():void
+    [Before(order=2)]
+    public function before():void
     {
-        game = null;
-        classUnderTest = null;
+        _game = nice( Game );
+        classUnderTest = new KeyValuePairFactory( _game );
     }
 
     [Test]
@@ -53,37 +57,16 @@ public class KeyValuePairFSMTest
     public function createKeyValuePair_adds_Entity_to_Game():void
     {
         const entity:Entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_XML, KEY_CELL_XML, VALUE_CELL_XML );
-        assertThat( game.entities.length, equalTo( 1 ) )
+        assertThat( _game, received().method( "addEntity" ).arg( entity ).once() );
     }
 
-    [Test]
-    public function createKeyValuePair_returns_Entity_containing_instanceOf_EntityStateMachine():void
-    {
-        const entity:Entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_XML, KEY_CELL_XML, VALUE_CELL_XML );
-        assertThat( entity.get( EntityStateMachine ), instanceOf( EntityStateMachine ) );
-    }
 
     [Test]
-    public function preDispatch_state_is_default():void
+    public function entity_contains_expected_components():void
     {
         const entity:Entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_XML, KEY_CELL_XML, VALUE_CELL_XML );
-        const expectedComponents:Array = defaultComponents.concat( [ KeyCell, ValueCell, KeyValuePairIndex, URLRequest] );
+        const expectedComponents:Array = defaultComponents.concat( [ KeyValuePairInfo, KeyCell, ValueCell ] );
         assertExpectedComponents( expectedComponents, entity );
-    }
-
-    [Test]
-    public function postDispatch_state():void
-    {
-        const entity:Entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_XML, KEY_CELL_XML, VALUE_CELL_XML );
-        const expectedComponents:Array = defaultComponents.concat( [ KeyCell, ValueCell, KeyValuePairIndex] );
-        changeState( EntityStateNames.POST_DISPATCH, entity );
-        assertExpectedComponents( expectedComponents, entity );
-    }
-
-    private function changeState( name:String, entity:Entity ):void
-    {
-        const fsm:EntityStateMachine = entity.get( EntityStateMachine );
-        fsm.changeState( name );
     }
 
 
@@ -109,15 +92,15 @@ public class KeyValuePairFSMTest
     public function UID_increases_with_each_call_for_same_doc_name():void
     {
         var entity:Entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_XML, KEY_CELL_XML, VALUE_CELL_XML );
-        var uid:int = KeyValuePairIndex( entity.get( KeyValuePairIndex ) ).index;
+        var uid:int = KeyValuePairInfo( entity.get( KeyValuePairInfo ) ).index;
         assertThat( uid, equalTo( 0 ) );
 
         entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_XML, KEY_CELL_XML, VALUE_CELL_XML );
-        uid = KeyValuePairIndex( entity.get( KeyValuePairIndex ) ).index;
+        uid = KeyValuePairInfo( entity.get( KeyValuePairInfo ) ).index;
         assertThat( uid, equalTo( 1 ) );
 
         entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_XML, KEY_CELL_XML, VALUE_CELL_XML );
-        uid = KeyValuePairIndex( entity.get( KeyValuePairIndex ) ).index;
+        uid = KeyValuePairInfo( entity.get( KeyValuePairInfo ) ).index;
         assertThat( uid, equalTo( 2 ) );
     }
 
@@ -126,19 +109,19 @@ public class KeyValuePairFSMTest
     public function UID_increases_per_doc_name():void
     {
         var entity:Entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_DOCX, KEY_CELL_XML, VALUE_CELL_XML );
-        var uid:int = KeyValuePairIndex( entity.get( KeyValuePairIndex ) ).index;
+        var uid:int = KeyValuePairInfo( entity.get( KeyValuePairInfo ) ).index;
         assertThat( "URL_WELL_FORMED_DOCUMENT_DOCX - first call", uid, equalTo( 0 ) );
 
         entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_XML, KEY_CELL_XML, VALUE_CELL_XML );
-        uid = KeyValuePairIndex( entity.get( KeyValuePairIndex ) ).index;
+        uid = KeyValuePairInfo( entity.get( KeyValuePairInfo ) ).index;
         assertThat( "URL_WELL_FORMED_DOCUMENT_XML - first call", uid, equalTo( 0 ) );
 
         entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_DOCX, KEY_CELL_XML, VALUE_CELL_XML );
-        uid = KeyValuePairIndex( entity.get( KeyValuePairIndex ) ).index;
+        uid = KeyValuePairInfo( entity.get( KeyValuePairInfo ) ).index;
         assertThat( "URL_WELL_FORMED_DOCUMENT_DOCX - second call", uid, equalTo( 1 ) );
 
         entity = classUnderTest.createKeyValuePair( URL_WELL_FORMED_DOCUMENT_XML, KEY_CELL_XML, VALUE_CELL_XML );
-        uid = KeyValuePairIndex( entity.get( KeyValuePairIndex ) ).index;
+        uid = KeyValuePairInfo( entity.get( KeyValuePairInfo ) ).index;
         assertThat( "URL_WELL_FORMED_DOCUMENT_XML - second call", uid, equalTo( 1 ) );
 
     }

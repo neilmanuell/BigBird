@@ -11,7 +11,7 @@ public class SystemRemovalTest
 {
 
 
-    private var _classUnderTest:SystemRemoval;
+    private var _classUnderTest:ActivityMonitor;
     private var _onRemoveCalled:Boolean
     private var _onRemove:Function;
     private var _updateComplete:Signal0 = new Signal0();
@@ -164,7 +164,9 @@ public class SystemRemovalTest
 
     public function prepare( onRemove:Function, inactiveCount:int = 3 ):void
     {
-        _classUnderTest = new SystemRemoval( onRemove, _updateComplete, inactiveCount );
+        _classUnderTest = new ActivityMonitor( inactiveCount );
+        _classUnderTest.onLimit = onRemove;
+        _classUnderTest.updateComplete = _updateComplete;
     }
 
     private function update( times:int, dispatch:Boolean = true ):void

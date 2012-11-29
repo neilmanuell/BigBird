@@ -2,21 +2,31 @@ package bigbird.systems.utils.removal
 {
 import net.richardlord.signals.Signal0;
 
-public class SystemRemoval implements SelfRemovingSystem
+public class ActivityMonitor implements SelfRemovingSystem
 {
 
-    public function SystemRemoval( onRemove:Function, updateComplete:Signal0, inactiveCount:int = 3 ):void
+    public function ActivityMonitor( inactiveCount:int = 3 ):void
     {
-        _onRemove = onRemove;
         _inactiveCount = inactiveCount;
-        _updateComplete = updateComplete;
+
     }
 
     private var _flaggedForRemove:Boolean = false;
-    private var _onRemove:Function;
+    private var _onLimit:Function;
     private var _updateComplete:Signal0;
 
     private var _inactiveCount:int = 0;
+
+
+    public function set onLimit( value:Function ):void
+    {
+        _onLimit = value;
+    }
+
+    public function set updateComplete( signal:Signal0 ):void
+    {
+        _updateComplete = signal;
+    }
 
     public function get inactiveCount():int
     {
@@ -27,7 +37,6 @@ public class SystemRemoval implements SelfRemovingSystem
     {
         return _flaggedForRemove;
     }
-
 
     private var _count:int = 0;
 
@@ -47,7 +56,8 @@ public class SystemRemoval implements SelfRemovingSystem
     {
         _flaggedForRemove = false;
         _count = 0;
-        _updateComplete.remove( onUpdateComplete );
+        if ( _updateComplete != null )
+            _updateComplete.remove( onUpdateComplete );
     }
 
     public function confirmActivity():void
@@ -59,17 +69,23 @@ public class SystemRemoval implements SelfRemovingSystem
     public function applyActivity():void
     {
 
-        if ( !_isActive && ++_count == 3 && _onRemove != null && _updateComplete != null )
+        if ( !_isActive && ++_count == 3 && _onLimit != null && _updateComplete != null )
         {
             _flaggedForRemove = true;
-            _updateComplete.addOnce( onUpdateComplete );
+            if ( _updateComplete != null )
+                _updateComplete.addOnce( onUpdateComplete );
+            else
+            {
+                onUpdateComplete();
+            }
         }
         _isActive = false;
     }
 
     private function onUpdateComplete():void
     {
-        _onRemove();
+        if ( _onLimit != null )
+            _onLimit();
     }
 
 

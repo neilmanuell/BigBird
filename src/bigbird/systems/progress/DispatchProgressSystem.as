@@ -1,12 +1,11 @@
 package bigbird.systems.progress
 {
 import bigbird.components.BigBirdProgress;
-import bigbird.nodes.LoadingProgressNode;
+import bigbird.controller.Removals;
+import bigbird.systems.utils.removal.ActivityMonitor;
 import bigbird.systems.utils.removal.SelfRemovingSystem;
-import bigbird.systems.utils.removal.SystemRemoval;
 
 import net.richardlord.ash.core.Game;
-import net.richardlord.ash.core.NodeList;
 import net.richardlord.ash.core.System;
 
 public class DispatchProgressSystem extends System implements SelfRemovingSystem
@@ -17,50 +16,66 @@ public class DispatchProgressSystem extends System implements SelfRemovingSystem
     }
 
     private var _progress:BigBirdProgress;
-    private var _progressNodes:NodeList;
-    private var _systemRemoval:SystemRemoval;
+    private var _activityMonitor:ActivityMonitor;
+    private var _removals:Removals;
 
     override public function addToGame( game:Game ):void
     {
-        const that:System = this;
+        defineActivityMonitor( game );
+    }
+
+    [Inject]
+    public function set activityMonitor( value:ActivityMonitor ):void
+    {
+        _activityMonitor = value;
+    }
+
+    [Inject]
+    public function set removals( value:Removals ):void
+    {
+        _removals = value;
+    }
+
+    private function defineActivityMonitor( game:Game ):void
+    {
+        const self:System = this;
         const onRemove:Function = function ():void
         {
-            game.removeSystem( that );
+            _removals.removeSystem( self );
         };
 
-        _systemRemoval = new SystemRemoval( onRemove, game.updateComplete );
-
-        _progressNodes = game.getNodeList( LoadingProgressNode );
+        _activityMonitor.onLimit = onRemove;
+        _activityMonitor.updateComplete = game.updateComplete;
     }
 
     public function get flaggedForRemove():Boolean
     {
-        return _systemRemoval.flaggedForRemove;
+        return _activityMonitor.flaggedForRemove;
     }
 
     public function cancelRemoval():void
     {
-        _systemRemoval.cancelRemoval();
+        _activityMonitor.cancelRemoval();
     }
-
 
     override public function removeFromGame( game:Game ):void
     {
-        _progressNodes = null;
-        _systemRemoval = null;
+        _removals = null;
+        _activityMonitor = null;
     }
 
     override public function update( time:Number ):void
     {
         if ( !isNaN( _progress.workDone / _progress.totalWork ) )
         {
-            _systemRemoval.confirmActivity();
+            _activityMonitor.confirmActivity();
             _progress.dispatch();
         }
+
         _progress.workDone = 0;
         _progress.totalWork = 0;
 
-        _systemRemoval.applyActivity();
+        _activityMonitor.applyActivity();
     }
 
 

@@ -19,6 +19,5 @@ public class BigBirdProgress
         _onProgress.dispatchProgress( this );
     }
 
-
 }
 }

@@ -2,12 +2,20 @@ package bigbird.systems.decode
 {
 import bigbird.asserts.assertKeyValuePairs;
 import bigbird.components.WordData;
+import bigbird.controller.EntityFSMController;
 import bigbird.factories.KeyValuePairFactory;
 
+import flash.events.Event;
+
+import mockolate.nice;
+import mockolate.prepare;
+import mockolate.received;
+
+import net.richardlord.ash.core.Entity;
 import net.richardlord.ash.core.Game;
 
+import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
-import org.hamcrest.object.equalTo;
 import org.hamcrest.object.isTrue;
 
 import supporting.values.*;
@@ -15,15 +23,27 @@ import supporting.values.*;
 public class DecodeFromWordFileTest
 {
     private var _document:WordData;
-    private var _game:Game;
     private var _classUnderTest:DecodeFromWordFile;
+    private var _factory:KeyValuePairFactory;
+    private var _entityFSMController:EntityFSMController;
+    private var _game:Game;
 
-    [Before]
+
+    [Before(order=1, async, timeout=5000)]
+    public function prepareMockolates():void
+    {
+        Async.proceedOnEvent( this,
+                prepare( Game, EntityFSMController, KeyValuePairFactory ),
+                Event.COMPLETE );
+    }
+
+    [Before(order=2)]
     public function before():void
     {
-        _game = new Game();
-
-        _classUnderTest = new DecodeFromWordFile( new KeyValuePairFactory( _game ) );
+        _game = nice( Game );
+        _factory = new KeyValuePairFactory( _game );
+        _entityFSMController = nice( EntityFSMController );
+        _classUnderTest = new DecodeFromWordFile( _factory, _entityFSMController );
     }
 
     public function prepareDocument( documentData:XML = null ):void
@@ -31,25 +51,12 @@ public class DecodeFromWordFileTest
         _document = new WordData( documentData || DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
     }
 
-    [After]
-    public function after():void
-    {
-        _document = null;
-        _classUnderTest = null;
-    }
-
-    [Test]
-    public function game_by_default_received_zero_entities():void
-    {
-        assertThat( _game.entities.length, equalTo( 0 ) );
-    }
-
     [Test]
     public function only_one_entity_created():void
     {
         prepareDocument();
-        _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document )
-        assertThat( _game.entities.length, equalTo( 1 ) );
+        const entity:Entity = _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document )
+        assertThat( _game, received().method( "addEntity" ).arg( entity ).once() );
     }
 
     [Test]
@@ -61,18 +68,17 @@ public class DecodeFromWordFileTest
             "[ValueCell(content:QAA)]"
         ];
 
-        _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
-        assertKeyValuePairs( _game.entities, expected );
+        const entity:Entity = _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
+        assertKeyValuePairs( entity, expected );
     }
 
     [Test]
     public function null_key_null_value_no_Entity_added():void
     {
-        prepareDocument( DOCUMENT_NO_CELLS_XML )
-        const expected:Array = [ ];
+        prepareDocument( DOCUMENT_NO_CELLS_XML );
 
         _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
-        assertKeyValuePairs( _game.entities, expected );
+        assertThat( _game, received().method( "addEntity" ).never() );
     }
 
     [Test]
@@ -84,10 +90,9 @@ public class DecodeFromWordFileTest
             "[ValueCell(content:*MISSING*)]"
         ];
 
-        _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
-        assertKeyValuePairs( _game.entities, expected );
+        const entity:Entity = _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
+        assertKeyValuePairs( entity, expected );
     }
-
 
     [Test]
     public function orphan_value_gets_missing_value_cell_added():void
@@ -98,8 +103,8 @@ public class DecodeFromWordFileTest
             "[ValueCell(content:QAA)]"
         ];
 
-        _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
-        assertKeyValuePairs( _game.entities, expected );
+        const entity:Entity = _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
+        assertKeyValuePairs( entity, expected );
     }
 
     [Test]
@@ -111,8 +116,8 @@ public class DecodeFromWordFileTest
             "[ValueCell(content:QAA)]"
         ];
 
-        _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
-        assertKeyValuePairs( _game.entities, expected );
+        const entity:Entity = _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
+        assertKeyValuePairs( entity, expected );
     }
 
     [Test]
@@ -123,6 +128,7 @@ public class DecodeFromWordFileTest
         assertThat( _document.hasNext, isTrue() );
     }
 
+
     [Test]
     public function key_key_duplication_missing_value_added():void
     {
@@ -132,9 +138,10 @@ public class DecodeFromWordFileTest
             "[ValueCell(content:*MISSING*)]"
         ];
 
-        _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
-        assertKeyValuePairs( _game.entities, expected );
+        const entity:Entity = _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
+        assertKeyValuePairs( entity, expected );
     }
+
 
     [Test]
     public function key_key_duplication_stepped_back():void
@@ -143,6 +150,7 @@ public class DecodeFromWordFileTest
         _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
         assertThat( _document.hasNext, isTrue() );
     }
+
 
     [Test]
     public function value_value_duplication_missing_key_added():void
@@ -153,9 +161,10 @@ public class DecodeFromWordFileTest
             "[ValueCell(content:MCQ)]"
         ];
 
-        _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
-        assertKeyValuePairs( _game.entities, expected );
+        const entity:Entity = _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
+        assertKeyValuePairs( entity, expected );
     }
+
 
     [Test]
     public function value_value_duplication_stepped_back():void
@@ -164,7 +173,6 @@ public class DecodeFromWordFileTest
         _classUnderTest.decode( URL_WELL_FORMED_DOCUMENT_DOCX, _document );
         assertThat( _document.hasNext, isTrue() );
     }
-
 
 }
 }

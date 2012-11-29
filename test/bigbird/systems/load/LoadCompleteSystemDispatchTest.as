@@ -1,119 +1,99 @@
 package bigbird.systems.load
 {
-import bigbird.components.io.DataLoader;
-import bigbird.controller.EntityStateNames;
+import bigbird.components.io.Loader;
+import bigbird.controller.Removals;
 import bigbird.controller.StartWordFileDecode;
 import bigbird.core.WordDataSignal;
-import bigbird.core.vos.DataLoaderVO;
-import bigbird.factories.WordEntityFactory;
+import bigbird.nodes.LoadingNode;
+import bigbird.systems.utils.removal.ActivityMonitor;
 
-import flash.net.URLRequest;
+import flash.events.Event;
+
+import mockolate.nice;
+import mockolate.prepare;
+import mockolate.received;
+import mockolate.stub;
 
 import net.richardlord.ash.core.Entity;
-import net.richardlord.ash.core.Game;
 
+import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
-import org.hamcrest.core.not;
-import org.hamcrest.object.equalTo;
 
-import supporting.io.AngryDataLoader;
-import supporting.io.GrumpyDataLoader;
-import supporting.io.HappyDataLoader;
-import supporting.utils.changeState;
-import supporting.values.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
-import supporting.values.URL_WELL_FORMED_DOCUMENT_XML;
+import supporting.values.URL_WELL_FORMED_DOCUMENT_DOCX;
 
 public class LoadCompleteSystemDispatchTest
 {
-    private var _game:Game;
     private var _classUnderTest:LoadCompleteSystem;
-    private var _factory:WordEntityFactory;
+
     private var _onLoaded:WordDataSignal;
-    private var _recieved:Array = [];
+    private var _startDecode:StartWordFileDecode;
+    private var _activityMonitor:ActivityMonitor;
+    private var _removals:Removals;
 
 
-    [Before]
+    [Before(order=1, async, timeout=5000)]
+    public function prepareMockolates():void
+    {
+        Async.proceedOnEvent( this,
+                prepare( WordDataSignal, StartWordFileDecode, Loader, ActivityMonitor, Removals ),
+                Event.COMPLETE );
+    }
+
+    [Before(order=2)]
     public function before():void
     {
-        _game = new Game();
-        _onLoaded = new WordDataSignal();
-        _classUnderTest = new LoadCompleteSystem( _onLoaded, new StartWordFileDecode() );
-        _game.addSystem( _classUnderTest, 0 );
-        _factory = new WordEntityFactory( _game );
-    }
-
-    [After]
-    public function after():void
-    {
-        _game = null;
-        _factory = null;
-        _classUnderTest = null;
-        _recieved = null;
-    }
-
-
-    [Test]
-    public function onLoad_dispatched_on_complete():void
-    {
-        createEntity( true );
-        _onLoaded.addOnce( onLoaded );
-        update();
-        assertThat( _recieved.length, equalTo( 1 ) );
+        _onLoaded = nice( WordDataSignal );
+        _startDecode = nice( StartWordFileDecode );
+        _classUnderTest = new LoadCompleteSystem( _onLoaded, _startDecode );
+        _activityMonitor = nice( ActivityMonitor );
+        _removals = nice( Removals );
+        _classUnderTest.activityMonitor = _activityMonitor;
+        _classUnderTest.removals = _removals;
     }
 
     [Test]
-    public function onLoad_url_dispatched_on_complete():void
+    public function dispatches_on_complete():void
     {
-        createEntity( true );
-        _onLoaded.addOnce( onLoaded );
-        update();
-        assertThat( _recieved[0].url, equalTo( URL_WELL_FORMED_DOCUMENT_XML.url ) );
+        const node:LoadingNode = createLoadingNode( true, true );
+        _classUnderTest.updateNode( node, 0 );
+        assertThat( _onLoaded, received().method( "dispatchWordData" ).arg( node.loader ).once() );
     }
 
     [Test]
-    public function onLoad_data_dispatched_on_complete():void
+    public function before_complete_activity_confirmed():void
     {
-        createEntity( true );
-        _onLoaded.addOnce( onLoaded );
-        update();
-        assertThat( _recieved[0].data.toString() ), equalTo( DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML.toString() );
+        const node:LoadingNode = createLoadingNode( false, true );
+        _classUnderTest.updateNode( node, 0 );
+        assertThat( _activityMonitor, received().method( "confirmActivity" ).once() );
     }
 
     [Test]
-    public function onLoad_data_is_copy():void
+    public function on_complete_and_successful_decode_WordFile():void
     {
-        createEntity( true );
-        _onLoaded.addOnce( onLoaded );
-        update();
-        assertThat( _recieved[0].data ), not( DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML );
+        const node:LoadingNode = createLoadingNode( true, true );
+        _classUnderTest.updateNode( node, 0 );
+        assertThat( _startDecode, received().method( "decode" ).arg( node ).once() );
+    }
+
+    [Test]
+    public function on_complete_and_unsuccessful_remove_Entity():void
+    {
+        const node:LoadingNode = createLoadingNode( true, false );
+        _classUnderTest.updateNode( node, 0 );
+        assertThat( _removals, received().method( "removeEntity" ).arg( node.entity ).once() );
     }
 
 
-    private function update():void
+    private function createLoadingNode( isComplete:Boolean, success:Boolean ):LoadingNode
     {
-        _game.update( 0 );
-    }
+        const node:LoadingNode = new LoadingNode();
+        const loader:Loader = nice( Loader, "Loader", [URL_WELL_FORMED_DOCUMENT_DOCX] );
+        stub( loader ).getter( "isLoadComplete" ).returns( isComplete );
+        stub( loader ).getter( "success" ).returns( success );
 
-    private function createEntity( isComplete:Boolean, success:Boolean = true ):Entity
-    {
-        const dataLoaderFactory:Function = function ( request:URLRequest ):DataLoader
-        {
-            if ( success )
-                return new AngryDataLoader( request );
-            else if ( isComplete )
-                return new HappyDataLoader( request );
-            else
-                return new GrumpyDataLoader( request );
-        };
-
-        const entity:Entity = _factory.createWordFileEntity( URL_WELL_FORMED_DOCUMENT_XML, dataLoaderFactory );
-        changeState( EntityStateNames.LOADING, entity );
-        return entity;
-    }
-
-    private function onLoaded( wordData:DataLoaderVO ):void
-    {
-        _recieved.push( wordData )
+        node.loader = loader;
+        node.entity = new Entity();
+        return node;
     }
 
 

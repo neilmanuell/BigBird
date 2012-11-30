@@ -13,7 +13,7 @@ import supporting.MockBigBird;
 import supporting.values.URL_WELL_FORMED_DOCUMENT_DOCX;
 import supporting.values.URL_WELL_FORMED_DOCUMENT_XML;
 
-public class BigBirdWellFormattedDecdodingTest
+public class BigBirdWellFormattedDecodingTest
 {
     private var _classUnderTest:MockBigBird;
     private const _recieved:Dictionary = new Dictionary( false );

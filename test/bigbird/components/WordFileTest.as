@@ -8,7 +8,7 @@ import org.hamcrest.object.isFalse;
 import org.hamcrest.object.isTrue;
 import org.hamcrest.object.strictlyEqualTo;
 
-import supporting.values.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
+import supporting.values.xml.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
 
 public class WordFileTest
 {

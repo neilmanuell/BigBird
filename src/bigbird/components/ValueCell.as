@@ -1,6 +1,6 @@
 package bigbird.components
 {
-import bigbird.components.utils.getSimpleCellContentFromData;
+import bigbird.components.utils.getComplexCellContentFromData;
 
 public class ValueCell
 {
@@ -11,7 +11,7 @@ public class ValueCell
     public function ValueCell( rawData:XML, wNS:Namespace )
     {
         this.rawData = rawData;
-        content = getSimpleCellContentFromData( rawData, wNS );
+        content = getComplexCellContentFromData( rawData, wNS );
     }
 
     public function toString():String

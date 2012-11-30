@@ -1,8 +1,11 @@
-package supporting.values
+package supporting.values.xml
 {
 
-public const DOCUMENT_FULL_SMALL_XML:XML =
-        <w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 wp14">
+public const DATA_WELL_FORMED_DOCUMENT:XML =
+        <w:document
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+        mc:Ignorable="w14 wp14">
             <w:body>
                 <w:p w:rsidR="00CE2AFE" w:rsidRDefault="0083566D" w:rsidP="00011919">
                     <w:pPr>
@@ -24,7 +27,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                     <w:tblPr>
                         <w:tblStyle w:val="TableGrid"/>
                         <w:tblW w:w="0" w:type="auto"/>
-                        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+                        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0"
+                        w:noVBand="1"/>
                     </w:tblPr>
                     <w:tblGrid>
                         <w:gridCol w:w="1526"/>
@@ -82,7 +86,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                     <w:tblPr>
                         <w:tblStyle w:val="TableGrid"/>
                         <w:tblW w:w="0" w:type="auto"/>
-                        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+                        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0"
+                        w:noVBand="1"/>
                     </w:tblPr>
                     <w:tblGrid>
                         <w:gridCol w:w="1526"/>
@@ -122,7 +127,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                     <w:tblPr>
                         <w:tblStyle w:val="TableGrid"/>
                         <w:tblW w:w="0" w:type="auto"/>
-                        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+                        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0"
+                        w:noVBand="1"/>
                     </w:tblPr>
                     <w:tblGrid>
                         <w:gridCol w:w="1526"/>
@@ -132,7 +138,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                         <w:tc>
                             <w:tcPr>
                                 <w:tcW w:w="1526" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6" w:themeFillShade="BF"/>
+                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6"
+                                w:themeFillShade="BF"/>
                             </w:tcPr>
                             <w:p w:rsidR="00E2691C" w:rsidRDefault="00E30338" w:rsidP="00EB3370">
                                 <w:r>
@@ -158,7 +165,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                         <w:tc>
                             <w:tcPr>
                                 <w:tcW w:w="1526" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6" w:themeFillShade="BF"/>
+                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6"
+                                w:themeFillShade="BF"/>
                             </w:tcPr>
                             <w:p w:rsidR="00F47E6A" w:rsidRDefault="00E30338" w:rsidP="00EB3370">
                                 <w:r>
@@ -184,7 +192,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                         <w:tc>
                             <w:tcPr>
                                 <w:tcW w:w="1526" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6" w:themeFillShade="BF"/>
+                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6"
+                                w:themeFillShade="BF"/>
                             </w:tcPr>
                             <w:p w:rsidR="00E2691C" w:rsidRDefault="00E30338" w:rsidP="00EB3370">
                                 <w:r>
@@ -210,7 +219,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                         <w:tc>
                             <w:tcPr>
                                 <w:tcW w:w="1526" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6" w:themeFillShade="BF"/>
+                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6"
+                                w:themeFillShade="BF"/>
                             </w:tcPr>
                             <w:p w:rsidR="00E2691C" w:rsidRDefault="00E30338" w:rsidP="00EB3370">
                                 <w:r>
@@ -238,7 +248,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                     <w:tblPr>
                         <w:tblStyle w:val="TableGrid"/>
                         <w:tblW w:w="0" w:type="auto"/>
-                        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+                        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0"
+                        w:noVBand="1"/>
                     </w:tblPr>
                     <w:tblGrid>
                         <w:gridCol w:w="1526"/>
@@ -279,7 +290,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                     <w:tblPr>
                         <w:tblStyle w:val="TableGrid"/>
                         <w:tblW w:w="0" w:type="auto"/>
-                        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+                        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0"
+                        w:noVBand="1"/>
                     </w:tblPr>
                     <w:tblGrid>
                         <w:gridCol w:w="1526"/>
@@ -289,7 +301,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                         <w:tc>
                             <w:tcPr>
                                 <w:tcW w:w="1526" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6" w:themeFillShade="BF"/>
+                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6"
+                                w:themeFillShade="BF"/>
                             </w:tcPr>
                             <w:p w:rsidR="00E2691C" w:rsidRDefault="00E30338" w:rsidP="00EB3370">
                                 <w:r>
@@ -315,7 +328,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                         <w:tc>
                             <w:tcPr>
                                 <w:tcW w:w="1526" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6" w:themeFillShade="BF"/>
+                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6"
+                                w:themeFillShade="BF"/>
                             </w:tcPr>
                             <w:p w:rsidR="00F47E6A" w:rsidRDefault="00E30338" w:rsidP="00EB3370">
                                 <w:r>
@@ -341,7 +355,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                         <w:tc>
                             <w:tcPr>
                                 <w:tcW w:w="1526" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6" w:themeFillShade="BF"/>
+                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6"
+                                w:themeFillShade="BF"/>
                             </w:tcPr>
                             <w:p w:rsidR="00E2691C" w:rsidRDefault="00E30338" w:rsidP="00EB3370">
                                 <w:r>
@@ -367,7 +382,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                         <w:tc>
                             <w:tcPr>
                                 <w:tcW w:w="1526" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6" w:themeFillShade="BF"/>
+                                <w:shd w:val="clear" w:color="auto" w:fill="E36C0A" w:themeFill="accent6"
+                                w:themeFillShade="BF"/>
                             </w:tcPr>
                             <w:p w:rsidR="00E2691C" w:rsidRDefault="00E30338" w:rsidP="00EB3370">
                                 <w:r>
@@ -393,7 +409,8 @@ public const DOCUMENT_FULL_SMALL_XML:XML =
                 <w:p w:rsidR="00E2691C" w:rsidRDefault="00E2691C" w:rsidP="000A6050"/>
                 <w:sectPr w:rsidR="00E2691C">
                     <w:pgSz w:w="11906" w:h="16838"/>
-                    <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="708" w:footer="708" w:gutter="0"/>
+                    <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="708" w:footer="708"
+                    w:gutter="0"/>
                     <w:cols w:space="708"/>
                     <w:docGrid w:linePitch="360"/>
                 </w:sectPr>

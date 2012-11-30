@@ -1,4 +1,4 @@
-package supporting.values
+package supporting.values.xml
 {
 
 public const DOCUMENT_FULL_MISSING_VALUE_XML:XML =

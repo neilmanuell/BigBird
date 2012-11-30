@@ -5,7 +5,7 @@ import bigbird.components.io.DataLoader;
 import flash.events.ErrorEvent;
 import flash.net.URLRequest;
 
-import supporting.values.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
+import supporting.values.xml.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
 
 public class HappyDataLoader implements DataLoader
 {

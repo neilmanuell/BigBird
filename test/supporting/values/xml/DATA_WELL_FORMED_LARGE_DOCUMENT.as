@@ -1,4 +1,4 @@
-package supporting.values
+package supporting.values.xml
 {
 
 public const DATA_WELL_FORMED_LARGE_DOCUMENT:XML =

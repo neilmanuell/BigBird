@@ -53,6 +53,7 @@ public class XMLLoader implements DataLoader
 
     public function get data():XML
     {
+        XML.ignoreWhitespace = false;
         return new XML( _loader.data );
     }
 

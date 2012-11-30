@@ -19,7 +19,7 @@ import net.richardlord.ash.core.Entity;
 import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
 
-import supporting.values.URL_WELL_FORMED_DOCUMENT_DOCX;
+import supporting.values.requests.URL_WELL_FORMED_DOCUMENT_DOCX;
 
 public class LoadCompleteSystemDispatchTest
 {

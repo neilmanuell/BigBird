@@ -17,7 +17,7 @@ import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 
-import supporting.values.URL_WELL_FORMED_DOCUMENT_DOCX;
+import supporting.values.requests.URL_WELL_FORMED_DOCUMENT_DOCX;
 
 public class LoadProgressSystemTest
 {

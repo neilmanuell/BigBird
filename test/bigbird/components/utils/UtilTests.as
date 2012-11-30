@@ -3,8 +3,8 @@ package bigbird.components.utils
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 
-import supporting.values.KEY_CELL_XML;
-import supporting.values.VALUE_CELL_XML;
+import supporting.values.xml.KEY_CELL_XML;
+import supporting.values.xml.VALUE_CELL_XML;
 
 public class UtilTests
 {

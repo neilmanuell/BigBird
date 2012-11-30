@@ -20,10 +20,10 @@ import org.hamcrest.object.equalTo;
 import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
 
-import supporting.values.KEY_CELL_XML;
-import supporting.values.URL_WELL_FORMED_DOCUMENT_DOCX;
-import supporting.values.URL_WELL_FORMED_DOCUMENT_XML;
-import supporting.values.VALUE_CELL_XML;
+import supporting.values.requests.URL_WELL_FORMED_DOCUMENT_DOCX;
+import supporting.values.requests.URL_WELL_FORMED_DOCUMENT_XML;
+import supporting.values.xml.KEY_CELL_XML;
+import supporting.values.xml.VALUE_CELL_XML;
 
 public class KeyValuePairFSMTest
 {

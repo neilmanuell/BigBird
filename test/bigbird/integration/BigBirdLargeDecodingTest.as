@@ -11,11 +11,11 @@ import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 
 import supporting.MockBigBird;
-import supporting.values.requests.URL_WELL_FORMED_DOCUMENT_DOCX;
-import supporting.values.requests.URL_WELL_FORMED_DOCUMENT_XML;
+import supporting.values.requests.URL_WELL_FORMED_LARGE_DOCUMENT_DOCX;
+import supporting.values.requests.URL_WELL_FORMED_LARGE_DOCUMENT_XML;
 import supporting.values.results.expectedKeyValuePairs;
 
-public class BigBirdWellFormattedDecodingTest
+public class BigBirdLargeDecodingTest
 {
     private var _classUnderTest:MockBigBird;
     private const _recieved:Dictionary = new Dictionary( false );
@@ -38,8 +38,8 @@ public class BigBirdWellFormattedDecodingTest
     public function test():void
     {
         _classUnderTest.onDecoded.add( onDecoded );
-        _classUnderTest.load( URL_WELL_FORMED_DOCUMENT_XML );
-        _classUnderTest.load( URL_WELL_FORMED_DOCUMENT_DOCX );
+        _classUnderTest.load( URL_WELL_FORMED_LARGE_DOCUMENT_XML );
+        _classUnderTest.load( URL_WELL_FORMED_LARGE_DOCUMENT_DOCX );
         var asyncHandler:Function = Async.asyncHandler( this, handleComplete, 500, null );
         _classUnderTest.addEventListener( Event.COMPLETE, asyncHandler );
     }
@@ -55,8 +55,8 @@ public class BigBirdWellFormattedDecodingTest
 
     private function handleComplete( event:Event, data:* ):void
     {
-        assertThat( _recieved[URL_WELL_FORMED_DOCUMENT_XML].join( "," ), equalTo( _expected[URL_WELL_FORMED_DOCUMENT_XML].join( "," ) ) );
-        assertThat( _recieved[URL_WELL_FORMED_DOCUMENT_DOCX].join( "," ), equalTo( _expected[URL_WELL_FORMED_DOCUMENT_DOCX].join( "," ) ) );
+        assertThat( _recieved[URL_WELL_FORMED_LARGE_DOCUMENT_XML].join( "," ), equalTo( _expected[URL_WELL_FORMED_LARGE_DOCUMENT_XML].join( "," ) ) );
+        assertThat( _recieved[URL_WELL_FORMED_LARGE_DOCUMENT_DOCX].join( "," ), equalTo( _expected[URL_WELL_FORMED_LARGE_DOCUMENT_DOCX].join( "," ) ) );
     }
 }
 }

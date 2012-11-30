@@ -1,7 +1,7 @@
 package bigbird.components
 {
 import bigbird.components.utils.getCellColourFromData;
-import bigbird.components.utils.getSimpleCellContentFromData;
+import bigbird.components.utils.getComplexCellContentFromData;
 
 public class KeyCell
 {
@@ -14,7 +14,7 @@ public class KeyCell
     {
         this.rawData = rawData;
         colour = getCellColourFromData( rawData, wNS );
-        label = getSimpleCellContentFromData( rawData, wNS );
+        label = getComplexCellContentFromData( rawData, wNS );
     }
 
     public function toString():String

@@ -11,9 +11,9 @@ import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 
 import supporting.MockBigBird;
-import supporting.values.DATA_WELL_FORMED_DOCUMENT;
-import supporting.values.URL_WELL_FORMED_DOCUMENT_DOCX;
-import supporting.values.URL_WELL_FORMED_DOCUMENT_XML;
+import supporting.values.requests.URL_WELL_FORMED_DOCUMENT_DOCX;
+import supporting.values.requests.URL_WELL_FORMED_DOCUMENT_XML;
+import supporting.values.xml.DATA_WELL_FORMED_DOCUMENT;
 
 public class BigBirdWellFormattedLoadingTest
 {

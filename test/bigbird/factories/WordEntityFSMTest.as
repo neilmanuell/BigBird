@@ -16,7 +16,7 @@ import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.instanceOf;
 
-import supporting.values.URL_WELL_FORMED_DOCUMENT_XML;
+import supporting.values.requests.URL_WELL_FORMED_DOCUMENT_XML;
 
 public class WordEntityFSMTest
 {

@@ -8,29 +8,18 @@ import flash.utils.Dictionary;
 
 import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
+import org.hamcrest.object.equalTo;
 
 import supporting.MockBigBird;
-import supporting.values.URL_MISSING_VALUE_DOCUMENT_DOCX;
-import supporting.values.URL_MISSING_VALUE_DOCUMENT_XML;
+import supporting.values.requests.URL_MISSING_VALUE_DOCUMENT_DOCX;
+import supporting.values.requests.URL_MISSING_VALUE_DOCUMENT_XML;
+import supporting.values.results.expectedKeyValuePairs;
 
 public class BigBirdMissingValueDecodingTest
 {
     private var _classUnderTest:MockBigBird;
     private const _recieved:Dictionary = new Dictionary( false );
-    private const _expected:Array = [
-        "[KeyValuePair(colour:9621584,label:Text 1,content:A)]" ,
-        "[KeyValuePair(colour:9621584,label:Text 2,content:B)]" ,
-        "[KeyValuePair(colour:5541332,label:Text 3,content:C)]" ,
-        "[KeyValuePair(colour:14904330,label:Text 4,content:D)]" ,
-        "[KeyValuePair(colour:14904330,label:Text 5,content:E)]" ,
-        "[KeyValuePair(colour:14904330,label:Text 6,content:F)]" ,
-        "[KeyValuePair(colour:14904330,label:Text 7,content:G)]" ,
-        "[KeyValuePair(colour:5541332,label:Text 8,content:H)]" ,
-        "[KeyValuePair(colour:14904330,label:Text 9,content:*MISSING*)]" ,
-        "[KeyValuePair(colour:14904330,label:Text 10,content:J)]" ,
-        "[KeyValuePair(colour:14904330,label:Text 11,content:K)]" ,
-        "[KeyValuePair(colour:14904330,label:Text 12,content:L)]"
-    ];
+    private const _expected:Dictionary = expectedKeyValuePairs();
 
     [Before]
     public function before():void
@@ -66,8 +55,8 @@ public class BigBirdMissingValueDecodingTest
 
     private function handleComplete( event:Event, data:* ):void
     {
-        assertThat( _expected.join( "," ), _recieved[URL_MISSING_VALUE_DOCUMENT_XML].join( "," ) );
-        assertThat( _expected.join( "," ), _recieved[URL_MISSING_VALUE_DOCUMENT_DOCX].join( "," ) );
+        assertThat( _recieved[URL_MISSING_VALUE_DOCUMENT_XML].join( "," ), equalTo( _expected[URL_MISSING_VALUE_DOCUMENT_XML].join( "," ) ) );
+        assertThat( _recieved[URL_MISSING_VALUE_DOCUMENT_DOCX].join( "," ), equalTo( _expected[URL_MISSING_VALUE_DOCUMENT_DOCX].join( "," ) ) );
     }
 }
 }

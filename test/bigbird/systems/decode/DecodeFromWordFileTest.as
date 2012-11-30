@@ -18,7 +18,14 @@ import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
 import org.hamcrest.object.isTrue;
 
-import supporting.values.*;
+import supporting.values.requests.URL_WELL_FORMED_DOCUMENT_DOCX;
+import supporting.values.xml.DOCUMENT_KEY_KEY_DUPLICATION_XML;
+import supporting.values.xml.DOCUMENT_NO_CELLS_XML;
+import supporting.values.xml.DOCUMENT_ORPHAN_KEY_XML;
+import supporting.values.xml.DOCUMENT_ORPHAN_VALUE_XML;
+import supporting.values.xml.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
+import supporting.values.xml.DOCUMENT_VALUE_KEY_REVERSE_PAIR_XML;
+import supporting.values.xml.DOCUMENT_VALUE_VALUE_DUPLICATION_XML;
 
 public class DecodeFromWordFileTest
 {

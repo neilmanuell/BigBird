@@ -17,7 +17,6 @@ public class BaseSelfRemovingSystem extends ListIteratingSystem implements SelfR
     public function BaseSelfRemovingSystem( nodeClass:Class, nodeUpdateFunction:Function )
     {
         super( nodeClass, nodeUpdateFunction );
-
     }
 
     [Inject]

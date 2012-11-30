@@ -3,16 +3,20 @@ package bigbird.integration
 import bigbird.core.vos.KeyValuePairVO;
 
 import flash.events.Event;
+import flash.net.URLRequest;
+import flash.utils.Dictionary;
 
 import org.flexunit.async.Async;
 import org.hamcrest.assertThat;
 
 import supporting.MockBigBird;
+import supporting.values.URL_WELL_FORMED_DOCUMENT_DOCX;
+import supporting.values.URL_WELL_FORMED_DOCUMENT_XML;
 
-public class BigBirdWellFormattedTest
+public class BigBirdWellFormattedDecdodingTest
 {
     private var _classUnderTest:MockBigBird;
-    private const _recieved:Array = [];
+    private const _recieved:Dictionary = new Dictionary( false );
     private const _expected:Array = [
         "[KeyValuePair(colour:9621584,label:Text 1,content:A)]" ,
         "[KeyValuePair(colour:9621584,label:Text 2,content:B)]" ,
@@ -41,23 +45,29 @@ public class BigBirdWellFormattedTest
     }
 
 
-    //[Test(async)]
-    public function adding_document_sets_isActive_true():void
+    [Test(async)]
+    public function test():void
     {
         _classUnderTest.onDecoded.add( onDecoded );
-        //_classUnderTest.addRawDocumentXML( null, DOCUMENT_FULL_SMALL_XML );
+        _classUnderTest.load( URL_WELL_FORMED_DOCUMENT_XML );
+        _classUnderTest.load( URL_WELL_FORMED_DOCUMENT_DOCX );
         var asyncHandler:Function = Async.asyncHandler( this, handleComplete, 500, null );
         _classUnderTest.addEventListener( Event.COMPLETE, asyncHandler );
     }
 
-    private function onDecoded( name:String, data:KeyValuePairVO ):void
+    private function onDecoded( request:URLRequest, index:int, data:KeyValuePairVO ):void
     {
-        _recieved.push( data.toString() );
+        if ( _recieved[request] == null )
+            _recieved[request] = [data.toString()];
+
+        else
+            _recieved[request].push( data.toString() );
     }
 
     private function handleComplete( event:Event, data:* ):void
     {
-        assertThat( _expected.join( "," ), _recieved.join( "," ) );
+        assertThat( _expected.join( "," ), _recieved[URL_WELL_FORMED_DOCUMENT_XML].join( "," ) );
+        assertThat( _expected.join( "," ), _recieved[URL_WELL_FORMED_DOCUMENT_DOCX].join( "," ) );
     }
 }
 }

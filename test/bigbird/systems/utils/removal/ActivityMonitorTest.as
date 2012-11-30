@@ -7,7 +7,7 @@ import org.hamcrest.object.equalTo;
 import org.hamcrest.object.isFalse;
 import org.hamcrest.object.isTrue;
 
-public class SystemRemovalTest
+public class ActivityMonitorTest
 {
 
 
@@ -57,7 +57,7 @@ public class SystemRemovalTest
     }
 
     [Test]
-    public function overrideRemoval_sets_count_to_zero():void
+    public function cancelRemoval_sets_count_to_zero():void
     {
         prepare( null, 3 );
         _classUnderTest.applyActivity();

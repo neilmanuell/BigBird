@@ -6,7 +6,7 @@ public class StartWordFileDecode
 {
 
     [Inject]
-    public var fsmController:EntityFSMController;
+    public var fsmController:BigBirdFSMController;
 
 
     public function decode( node:LoadingNode ):void

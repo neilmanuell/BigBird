@@ -2,7 +2,6 @@ package bigbird.systems.decode
 {
 import bigbird.components.WordData;
 import bigbird.controller.EntityFSMController;
-import bigbird.controller.EntityStateNames;
 import bigbird.factories.KeyValuePairFactory;
 import bigbird.systems.utils.decoding.KeyValuePairResultVO;
 import bigbird.systems.utils.decoding.adjustKeyValuePairing;
@@ -37,9 +36,7 @@ public class DecodeFromWordFile
         else if ( keyValuePairResult.stepback )
             document.stepback();
 
-        const entity:Entity = _factory.createKeyValuePair( request, keyValuePairResult.key, keyValuePairResult.value );
-        _fsmController.changeState( EntityStateNames.PRE_DISPATCH, entity );
-        return entity
+        return _factory.createKeyValuePair( request, keyValuePairResult.key, keyValuePairResult.value );
     }
 
 

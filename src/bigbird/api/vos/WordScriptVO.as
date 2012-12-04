@@ -1,12 +1,12 @@
-package bigbird.core.vos
+package bigbird.api.vos
 {
 import bigbird.components.io.DataLoader;
 
-public class DataLoaderVO
+public class WordScriptVO
 {
     private var _data:DataLoader;
 
-    public function DataLoaderVO( data:DataLoader )
+    public function WordScriptVO( data:DataLoader )
     {
         _data = data;
     }

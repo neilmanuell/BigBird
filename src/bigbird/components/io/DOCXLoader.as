@@ -62,8 +62,12 @@ public class DOCXLoader implements DataLoader
 
     public function get data():XML
     {
+        XML.ignoreWhitespace = false;
         const d:String = _fzip.getFileByName( DOCUMENT_XML_PATH ).getContentAsString();
-        return new XML( d );
+        const out:XML = new XML( d )         ;
+        out.normalize();
+        XML.ignoreWhitespace = true;
+        return out;
     }
 
     public function get url():String

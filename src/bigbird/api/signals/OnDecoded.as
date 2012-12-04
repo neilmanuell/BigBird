@@ -1,15 +1,15 @@
-package bigbird.core
+package bigbird.api.signals
 {
-import bigbird.core.vos.KeyValuePairVO;
+import bigbird.api.vos.KeyValuePairVO;
 import bigbird.nodes.KeyValuePairNode;
 
 import flash.net.URLRequest;
 
 import net.richardlord.signals.Signal3;
 
-public class KeyValuePairSignal extends Signal3
+public class OnDecoded extends Signal3
 {
-    public function KeyValuePairSignal()
+    public function OnDecoded()
     {
         super( URLRequest, int, KeyValuePairVO );
     }

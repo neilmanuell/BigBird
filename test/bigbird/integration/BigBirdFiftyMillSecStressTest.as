@@ -24,18 +24,18 @@ import supporting.values.requests.URL_WELL_FORMED_LARGE_DOCUMENT_DOCX;
 import supporting.values.requests.URL_WELL_FORMED_LARGE_DOCUMENT_XML;
 import supporting.values.results.expectedKeyValuePairs;
 
-public class BigBirdOneMillSecStressTest
+public class BigBirdFiftyMillSecStressTest
 {
     private var _classUnderTest:MockBigBird;
     private const _urls:Array = [
         URL_MISSING_KEY_DOCUMENT_DOCX,
         URL_MISSING_VALUE_DOCUMENT_XML,
-        URL_MISSING_KEY_DOCUMENT_XML,
         URL_WELL_FORMED_LARGE_DOCUMENT_XML,
+        URL_MISSING_KEY_DOCUMENT_XML,
         URL_WELL_FORMED_DOCUMENT_DOCX,
+        URL_MISSING_VALUE_DOCUMENT_DOCX,
         URL_WELL_FORMED_LARGE_DOCUMENT_DOCX,
-        URL_WELL_FORMED_DOCUMENT_XML,
-        URL_MISSING_VALUE_DOCUMENT_DOCX
+        URL_WELL_FORMED_DOCUMENT_XML
     ];
     private const _received:Dictionary = new Dictionary( false );
     private const _expected:Dictionary = expectedKeyValuePairs();
@@ -54,23 +54,23 @@ public class BigBirdOneMillSecStressTest
     public function test():void
     {
         _classUnderTest.onDecoded.add( onDecoded );
-        _classUnderTest.onProgress.add(onProgress);
+        _classUnderTest.onProgress.add( onProgress );
         var asyncHandler:Function = Async.asyncHandler( this, handleComplete, 1000, null );
         _classUnderTest.addEventListener( Event.COMPLETE, asyncHandler );
-        _timer = new Timer( 1, _urls.length );
+        _timer = new Timer( 50, _urls.length );
         _timer.addEventListener( TimerEvent.TIMER, onTick );
         _timer.start();
+    }
+
+    private function onProgress( vo:ProgressVO ):void
+    {
+        _receivedProgress.push( vo);
     }
 
     private function onTick( event:TimerEvent ):void
     {
         _classUnderTest.load( _urls[_count++] );
 
-    }
-
-    private function onProgress( vo:ProgressVO ):void
-    {
-        _receivedProgress.push( vo);
     }
 
     private function onDecoded( request:URLRequest, index:int, data:KeyValuePairVO ):void
@@ -84,8 +84,7 @@ public class BigBirdOneMillSecStressTest
 
     private function handleComplete( event:Event, data:* ):void
     {
-        for each ( var url:URLRequest in _urls )
-        {
+        for each (var url:URLRequest in _urls){
 
             assertThat( _received[url].join( "," ), equalTo( _expected[url].join( "," ) ) );
         }

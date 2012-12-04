@@ -1,6 +1,6 @@
 package bigbird.integration
 {
-import bigbird.core.vos.KeyValuePairVO;
+import bigbird.api.vos.KeyValuePairVO;
 
 import flash.events.Event;
 import flash.net.URLRequest;
@@ -51,6 +51,7 @@ public class BigBirdWellFormattedDecodingTest
 
         else
             _recieved[request].push( data.toString() );
+
     }
 
     private function handleComplete( event:Event, data:* ):void

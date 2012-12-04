@@ -1,14 +1,14 @@
 package bigbird.systems.decode
 {
-import bigbird.core.KeyValuePairSignal;
+import bigbird.api.signals.OnDecoded;
 import bigbird.nodes.KeyValuePairNode;
 import bigbird.systems.BaseSelfRemovingSystem;
 
 public class DispatchDecodedSystem extends BaseSelfRemovingSystem
 {
-    private var _signal:KeyValuePairSignal;
+    private var _signal:OnDecoded;
 
-    public function DispatchDecodedSystem( signal:KeyValuePairSignal )
+    public function DispatchDecodedSystem( signal:OnDecoded )
     {
         super( KeyValuePairNode, updateNode );
         _signal = signal;

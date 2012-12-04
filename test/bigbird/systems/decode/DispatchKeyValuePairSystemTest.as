@@ -1,7 +1,7 @@
 package bigbird.systems.decode
 {
 import bigbird.components.KeyValuePairInfo;
-import bigbird.core.KeyValuePairSignal;
+import bigbird.api.signals.OnDecoded;
 import bigbird.nodes.KeyValuePairNode;
 import bigbird.systems.utils.removal.ActivityMonitor;
 
@@ -20,21 +20,21 @@ public class DispatchKeyValuePairSystemTest
 {
 
     private var _classUnderTest:DispatchDecodedSystem;
-    private var _signal:KeyValuePairSignal;
+    private var _signal:OnDecoded;
     private var _activityMontitor:ActivityMonitor;
 
     [Before(order=1, async, timeout=5000)]
     public function prepareMockolates():void
     {
         Async.proceedOnEvent( this,
-                prepare( KeyValuePairSignal, ActivityMonitor ),
+                prepare( OnDecoded, ActivityMonitor ),
                 Event.COMPLETE );
     }
 
     [Before(order=2)]
     public function before():void
     {
-        _signal = nice( KeyValuePairSignal );
+        _signal = nice( OnDecoded );
         _classUnderTest = new DispatchDecodedSystem( _signal );
         _activityMontitor = nice( ActivityMonitor );
         _classUnderTest.activityMonitor = _activityMontitor;

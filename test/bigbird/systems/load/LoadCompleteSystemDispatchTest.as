@@ -3,7 +3,7 @@ package bigbird.systems.load
 import bigbird.components.io.Loader;
 import bigbird.controller.Removals;
 import bigbird.controller.StartWordFileDecode;
-import bigbird.core.WordDataSignal;
+import bigbird.api.signals.OnLoaded;
 import bigbird.nodes.LoadingNode;
 import bigbird.systems.utils.removal.ActivityMonitor;
 
@@ -25,7 +25,7 @@ public class LoadCompleteSystemDispatchTest
 {
     private var _classUnderTest:LoadCompleteSystem;
 
-    private var _onLoaded:WordDataSignal;
+    private var _onLoaded:OnLoaded;
     private var _startDecode:StartWordFileDecode;
     private var _activityMonitor:ActivityMonitor;
     private var _removals:Removals;
@@ -35,14 +35,14 @@ public class LoadCompleteSystemDispatchTest
     public function prepareMockolates():void
     {
         Async.proceedOnEvent( this,
-                prepare( WordDataSignal, StartWordFileDecode, Loader, ActivityMonitor, Removals ),
+                prepare( OnLoaded, StartWordFileDecode, Loader, ActivityMonitor, Removals ),
                 Event.COMPLETE );
     }
 
     [Before(order=2)]
     public function before():void
     {
-        _onLoaded = nice( WordDataSignal );
+        _onLoaded = nice( OnLoaded );
         _startDecode = nice( StartWordFileDecode );
         _classUnderTest = new LoadCompleteSystem( _onLoaded, _startDecode );
         _activityMonitor = nice( ActivityMonitor );

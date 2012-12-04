@@ -16,7 +16,6 @@ public class StartWordFileLoad
 
     public function load( request:URLRequest ):void
     {
-
         fsmController.changeState( EntityStateNames.LOADING, factory.createWordFileEntity( request ) )
     }
 

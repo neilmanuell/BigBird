@@ -1,6 +1,6 @@
 package bigbird.systems
 {
-import bigbird.core.StopSignal;
+import bigbird.controller.StopTick;
 
 import net.richardlord.ash.core.Game;
 import net.richardlord.ash.core.System;
@@ -14,14 +14,14 @@ public class IdleSystemTest
 {
     private var _game:Game;
     private var _classUnderTest:IdleSystem;
-    private var _stopSignal:StopSignal;
+    private var _stopSignal:StopTick;
     private var _onStopCalled:Boolean = false;
 
     [Before]
     public function before():void
     {
         _game = new Game();
-        _stopSignal = new StopSignal();
+        _stopSignal = new StopTick();
         _classUnderTest = new IdleSystem( _stopSignal );
         _game.addSystem( _classUnderTest, 0 );
     }

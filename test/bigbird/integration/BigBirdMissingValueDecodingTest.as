@@ -1,6 +1,6 @@
 package bigbird.integration
 {
-import bigbird.core.vos.KeyValuePairVO;
+import bigbird.api.vos.KeyValuePairVO;
 
 import flash.events.Event;
 import flash.net.URLRequest;

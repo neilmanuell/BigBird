@@ -1,15 +1,15 @@
 package bigbird.components
 {
-import bigbird.core.ProgressSignal;
+import bigbird.api.signals.OnProgress;
 
 public class BigBirdProgress
 {
     public var workDone:int;
     public var totalWork:int;
 
-    private var _onProgress:ProgressSignal;
+    private var _onProgress:OnProgress;
 
-    public function BigBirdProgress( onProgress:ProgressSignal )
+    public function BigBirdProgress( onProgress:OnProgress )
     {
         _onProgress = onProgress;
     }

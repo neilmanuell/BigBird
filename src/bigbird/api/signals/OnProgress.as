@@ -1,13 +1,13 @@
-package bigbird.core
+package bigbird.api.signals
 {
 import bigbird.components.BigBirdProgress;
-import bigbird.core.vos.ProgressVO;
+import bigbird.api.vos.ProgressVO;
 
 import net.richardlord.signals.Signal1;
 
-public class ProgressSignal extends Signal1
+public class OnProgress extends Signal1
 {
-    public function ProgressSignal()
+    public function OnProgress()
     {
         super( ProgressVO );
     }

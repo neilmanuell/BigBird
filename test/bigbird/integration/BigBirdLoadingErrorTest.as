@@ -1,8 +1,8 @@
 package bigbird.integration
 {
 import bigbird.asserts.assertReceivedDataLoaderVOsContain;
-import bigbird.core.vos.DataLoaderVO;
-import bigbird.core.vos.ProgressVO;
+import bigbird.api.vos.WordScriptVO;
+import bigbird.api.vos.ProgressVO;
 
 import flash.events.Event;
 import flash.net.URLRequest;
@@ -16,7 +16,7 @@ import supporting.MockBigBird;
 public class BigBirdLoadingErrorTest
 {
     private var _classUnderTest:MockBigBird;
-    private const _recievedData:Vector.<DataLoaderVO> = new Vector.<DataLoaderVO>();
+    private const _recievedData:Vector.<WordScriptVO> = new Vector.<WordScriptVO>();
     private const _recievedProgress:Array = [];
 
 
@@ -45,7 +45,7 @@ public class BigBirdLoadingErrorTest
         _classUnderTest.addEventListener( Event.COMPLETE, asyncHandler );
     }
 
-    private function onLoaded( wordData:DataLoaderVO ):void
+    private function onLoaded( wordData:WordScriptVO ):void
     {
         _recievedData.push( wordData );
     }

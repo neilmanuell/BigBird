@@ -1,7 +1,7 @@
 package bigbird.systems.load
 {
 import bigbird.controller.StartWordFileDecode;
-import bigbird.core.WordDataSignal;
+import bigbird.api.signals.OnLoaded;
 import bigbird.nodes.LoadingNode;
 import bigbird.systems.BaseSelfRemovingSystem;
 
@@ -9,10 +9,10 @@ public class LoadCompleteSystem extends BaseSelfRemovingSystem
 {
 
 
-    private var _onLoaded:WordDataSignal;
+    private var _onLoaded:OnLoaded;
     private var _wordFileDecode:StartWordFileDecode;
 
-    public function LoadCompleteSystem( onLoaded:WordDataSignal, decode:StartWordFileDecode )
+    public function LoadCompleteSystem( onLoaded:OnLoaded, decode:StartWordFileDecode )
     {
         super( LoadingNode, updateNode );
         _onLoaded = onLoaded;

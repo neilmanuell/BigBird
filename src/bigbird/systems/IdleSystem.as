@@ -1,6 +1,6 @@
 package bigbird.systems
 {
-import bigbird.core.StopSignal;
+import bigbird.controller.StopTick;
 
 import net.richardlord.ash.core.Game;
 import net.richardlord.ash.core.System;
@@ -8,11 +8,11 @@ import net.richardlord.ash.core.System;
 public class IdleSystem extends System
 {
 
-    private var _stop:StopSignal;
+    private var _stop:StopTick;
     private var _idlingNumber:int = 1;
     private var _game:Game;
 
-    public function IdleSystem( stop:StopSignal )
+    public function IdleSystem( stop:StopTick )
     {
         _stop = stop;
     }

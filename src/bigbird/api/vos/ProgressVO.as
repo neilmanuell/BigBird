@@ -1,4 +1,4 @@
-package bigbird.core.vos
+package bigbird.api.vos
 {
 import bigbird.components.BigBirdProgress;
 

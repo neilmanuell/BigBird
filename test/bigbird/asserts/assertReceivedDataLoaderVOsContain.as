@@ -1,17 +1,17 @@
 package bigbird.asserts
 {
-import bigbird.core.vos.DataLoaderVO;
+import bigbird.api.vos.WordScriptVO;
 
 import org.hamcrest.assertThat;
 import org.hamcrest.number.greaterThan;
 import org.hamcrest.number.lessThan;
 
-public function assertReceivedDataLoaderVOsContain( url:String, data:String, recieved:Vector.<DataLoaderVO>, isError:Boolean = false ):void
+public function assertReceivedDataLoaderVOsContain( url:String, data:String, recieved:Vector.<WordScriptVO>, isError:Boolean = false ):void
 {
     var numberContains:int = 0;
     var dataLoaderData:String;
 
-    for each ( var vo:DataLoaderVO in recieved )
+    for each ( var vo:WordScriptVO in recieved )
     {
         if ( isError )
         {

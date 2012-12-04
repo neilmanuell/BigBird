@@ -1,4 +1,4 @@
-package bigbird.core.vos
+package bigbird.api.vos
 {
 import bigbird.components.KeyCell;
 import bigbird.components.ValueCell;
@@ -28,6 +28,17 @@ public class KeyValuePairVO
     {
         return _value.content;
     }
+
+    public function get prettyPrintKeyXML():String
+    {
+        return  _key.rawData.toXMLString();
+    }
+
+    public function get prettyPrintValueXML():String
+    {
+        return _value.rawData.toXMLString();
+    }
+
 
     public function getPrecis( len:int = 20 ):String
     {

@@ -1,5 +1,4 @@
-package supporting.io
-{
+package supporting.io {
 import bigbird.components.io.DataLoader;
 
 import flash.events.ErrorEvent;
@@ -7,52 +6,42 @@ import flash.net.URLRequest;
 
 import supporting.values.xml.DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
 
-public class HappyDataLoader implements DataLoader
-{
+public class HappyDataLoader implements DataLoader {
     private var _url:String;
 
-    public function HappyDataLoader( request:URLRequest )
-    {
+    public function HappyDataLoader(request:URLRequest) {
         _url = request.url;
     }
 
-    public function get isLoadComplete():Boolean
-    {
+    public function get isLoadComplete():Boolean {
         return true;
     }
 
-    public function get data():XML
-    {
+    public function get data():XML {
         return DOCUMENT_SINGLE_KEY_VALUE_PAIR_XML;
     }
 
-    public function get url():String
-    {
+    public function get url():String {
         return _url;
     }
 
-    public function get bytesLoaded():uint
-    {
+    public function get bytesLoaded():uint {
         return 0;
     }
 
-    public function get bytesTotal():uint
-    {
+    public function get bytesTotal():uint {
         return 0;
     }
 
-    public function get success():Boolean
-    {
+    public function get success():Boolean {
         return true;
     }
 
-    public function destroy():void
-    {
+    public function destroy():void {
     }
 
-    public function get error():ErrorEvent
-    {
-        return new ErrorEvent( "Null Error Event" );
+    public function get error():* {
+        return new ErrorEvent("Null Error Event");
     }
 }
 }

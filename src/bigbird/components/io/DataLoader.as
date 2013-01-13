@@ -1,10 +1,5 @@
-package bigbird.components.io
-{
-import flash.events.ErrorEvent;
-
-public interface DataLoader
-
-{
+package bigbird.components.io {
+public interface DataLoader {
 
     function get bytesLoaded():uint
 
@@ -18,7 +13,7 @@ public interface DataLoader
 
     function get url():String
 
-    function get error():ErrorEvent
+    function get error():*
 
     function destroy():void
 
